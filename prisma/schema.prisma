@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum VehiculeCategorie {
+  BERLINE
+  VAN
+  SUV
+}
+
+model User {
+  id              String        @id @default(cuid())
+  email           String        @unique
+  password        String
+  role            Role          @default(USER)
+  status          RequestStatus @default(PENDING)
+  numeroReference String?       @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  profile Profile?
+}
+
+model Profile {
+  id         String   @id @default(cuid())
+  nom        String
+  prenom     String
+  telephone  String
+  ville      String
+  codePostal String
+  photoUrl     String?
+  carteBackgroundUrl String?
+  bio          String?
+  emailContact String?
+  galerie      String[] @default([])
+  langues      Json     @default("[]")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String    @unique
+  vehicule Vehicule? @relation("ProfileVehicule", fields: [vehiculeId], references: [id], onDelete: SetNull)
+  vehiculeId String?
+
+  hasPendingChanges    Boolean  @default(false)
+  pendingNom           String?
+  pendingPrenom        String?
+  pendingTelephone     String?
+  pendingVille         String?
+  pendingCodePostal    String?
+  pendingPhotoUrl      String?
+  pendingCarteBackgroundUrl String?
+  pendingBio           String?
+  pendingEmailContact  String?
+  pendingGalerie       String[] @default([])
+  pendingLangues       Json     @default("[]")
+
+  pendingVehicule   Vehicule? @relation("ProfilePendingVehicule", fields: [pendingVehiculeId], references: [id], onDelete: SetNull)
+  pendingVehiculeId String?
+
+  messages ContactMessage[]
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  nom       String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String
+}
+
+model AppSettings {
+  id           String @id @default("singleton")
+  cardsPerPage Int    @default(12)
+}
+
+model Vehicule {
+  id           String            @id @default(cuid())
+  categorie    VehiculeCategorie
+  nombrePlaces Int
+  photoUrl     String?
+  marque       String
+  modele       String
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  profiles        Profile[] @relation("ProfileVehicule")
+  pendingProfiles Profile[] @relation("ProfilePendingVehicule")
+}

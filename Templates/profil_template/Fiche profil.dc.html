@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="stylesheet" href="_ds/industry-164ece80-2114-4b16-98ce-615212b50ce9/styles.css">
+<script src="_ds/industry-164ece80-2114-4b16-98ce-615212b50ce9/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body)}
+a{color:var(--color-accent-700)}
+a:hover{color:var(--color-accent-900)}
+#page{max-width:1180px;margin:0 auto;padding:26px 30px 56px;display:flex;flex-direction:column;gap:34px}
+#hero{display:grid;grid-template-columns:340px minmax(0,1fr);gap:34px;align-items:start}
+#specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--color-divider)}
+#stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--color-divider)}
+#gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+#form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:900px){
+#hero{grid-template-columns:minmax(0,1fr)}
+#stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+#gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+#topnav{flex-wrap:wrap;row-gap:10px}
+}
+@media (max-width:560px){
+#specs{grid-template-columns:minmax(0,1fr)}
+#gallery{grid-template-columns:minmax(0,1fr)}
+#form{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+</helmet>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><polygon points="12,2.5 14.9,8.4 21.5,9.3 16.7,13.9 17.9,20.4 12,17.3 6.1,20.4 7.3,13.9 2.5,9.3 9.1,8.4"></polygon></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M5 13.5 6.6 8.9A2 2 0 0 1 8.5 7.5h7a2 2 0 0 1 1.9 1.4L19 13.5"></path><rect x="3.5" y="13.5" width="17" height="5" rx="1"></rect><circle cx="7.5" cy="18.5" r="1.4"></circle><circle cx="16.5" cy="18.5" r="1.4"></circle></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.5 3.5h3l1.5 4-2 1.5a10 10 0 0 0 5 5l1.5-2 4 1.5v3a1.5 1.5 0 0 1-1.6 1.5C11.6 18 6 12.4 5 5.1A1.5 1.5 0 0 1 6.5 3.5z"></path></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="1"></rect><polyline points="3.5 6.5 12 13 20.5 6.5"></polyline></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.3-7-11.5a7 7 0 1 1 14 0c0 5.2-7 11.5-7 11.5z"></path><circle cx="12" cy="10" r="2.5"></circle></symbol>
+<symbol id="i-arrow-left" viewBox="0 0 24 24"><line x1="20" y1="12" x2="4" y2="12"></line><polyline points="10 6 4 12 10 18"></polyline></symbol>
+</svg>
+
+<div id="topnav" style="position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:22px;padding:15px 30px;border-bottom:1px solid var(--color-divider);background:var(--color-bg)">
+<div style="display:flex;align-items:center;gap:9px;margin-right:auto">
+<span style="width:13px;height:13px;border:1px solid var(--color-accent);display:block"></span>
+<span style="font-family:var(--font-heading);font-weight:600;font-size:19px;letter-spacing:.1em;text-transform:uppercase">Mise en relation</span>
+</div>
+<a href="Annuaire des profils.dc.html" style="font-size:13.5px;color:var(--color-text);text-decoration:none" style-hover="color:var(--color-accent-700)">Chauffeurs</a>
+<a href="#page" style="font-size:13.5px;color:var(--color-text);text-decoration:none" style-hover="color:var(--color-accent-700)">Devenir chauffeur</a>
+<a href="#page" style="font-size:13.5px;color:var(--color-text);text-decoration:none" style-hover="color:var(--color-accent-700)">Aide</a>
+<span style="width:1px;height:18px;background:var(--color-divider)"></span>
+<a href="#page" style="font-size:13.5px;color:var(--color-text);text-decoration:none" style-hover="color:var(--color-accent-700)">Connexion</a>
+<a href="#page" class="btn btn-primary blueprint" style="text-decoration:none;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:7px 16px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>S'inscrire</a>
+</div>
+
+<div id="page">
+
+<a href="Annuaire des profils.dc.html" style="display:inline-flex;align-items:center;gap:7px;font-family:var(--font-heading);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--color-accent-700)" style-hover="color:var(--color-accent-900)">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-left"></use></svg>Retour à l'annuaire</a>
+
+<div id="hero">
+
+<div style="display:flex;flex-direction:column;gap:22px">
+<div class="blueprint duotone" style="position:relative;aspect-ratio:4/5;background-color:var(--color-accent-100);background-image:repeating-linear-gradient(135deg,rgba(89,128,166,.3) 0 1.5px,transparent 1.5px 7px);display:grid;place-items:center">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<span style="font-family:var(--font-heading);font-weight:600;font-size:88px;letter-spacing:.06em;color:var(--color-accent-700)">{{ initials }}</span>
+<span style="position:absolute;left:0;top:0;background:var(--color-accent-900);color:var(--color-bg);font-family:var(--font-heading);font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;padding:6px 11px">{{ city }}</span>
+<span style="position:absolute;left:9px;bottom:8px;font-family:ui-monospace,Menlo,monospace;font-size:9.5px;letter-spacing:.12em;color:var(--color-accent-700)">PHOTO DU PROFIL — 4:5</span>
+</div>
+
+<div class="blueprint" style="position:relative;padding:15px 16px;display:flex;flex-direction:column;gap:11px;background:var(--color-surface)">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<h6 style="margin:0;color:var(--color-neutral-700)">Contact direct</h6>
+<a href="tel:0770048766" style="display:flex;align-items:center;gap:9px;font-size:14.5px;text-decoration:none;color:var(--color-text)" style-hover="color:var(--color-accent-700)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-700);flex:none"><use href="#i-phone"></use></svg>07 70 04 87 66</a>
+<a href="mailto:asiatransportprive@gmail.com" style="display:flex;align-items:center;gap:9px;font-size:13px;text-decoration:none;color:var(--color-text);word-break:break-all" style-hover="color:var(--color-accent-700)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-700);flex:none"><use href="#i-mail"></use></svg>asiatransportprive@gmail.com</a>
+<a href="#form-plate" class="btn btn-primary btn-block blueprint" style="position:relative;text-decoration:none;letter-spacing:.08em;text-transform:uppercase;height:38px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>{{ primaryCta }}</a>
+<span style="font-size:11.5px;color:var(--color-neutral-700);text-align:center">Réponse habituelle en moins d'une heure</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:26px;min-width:0">
+
+<div style="display:flex;flex-direction:column;gap:9px">
+<div style="font-family:var(--font-heading);font-weight:600;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--color-accent-700)">Chauffeur VTC · fiche {{ ref }}</div>
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+<h1 style="margin:0;font-size:52px;letter-spacing:-.02em;line-height:1">{{ name }}</h1>
+<sc-if value="{{ verified }}" hint-placeholder-val="{{ true }}">
+<span style="display:inline-flex;align-items:center;gap:5px;border:1px solid var(--color-accent-400);color:var(--color-accent-800);font-family:var(--font-heading);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px">
+<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><use href="#i-check"></use></svg>Profil vérifié</span>
+</sc-if>
+</div>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--color-neutral-800)">
+<span style="display:inline-flex;align-items:center;gap:6px">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-700)"><use href="#i-pin"></use></svg>{{ city }} · rayon 60 km</span>
+<span style="display:inline-flex;align-items:center;gap:6px">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--color-accent-700)"><use href="#i-car"></use></svg>{{ vehicle }} · {{ seats }}</span>
+<span style="display:inline-flex;align-items:center;gap:6px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--color-accent-700)"><use href="#i-star"></use></svg>{{ rating }} — {{ reviews }}</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;padding-top:2px">
+<sc-for list="{{ langs }}" as="l" hint-placeholder-count="3">
+<span class="tag tag-outline" style="font-size:11.5px;padding:3px 9px;color:var(--color-accent-700)">{{ l }}</span>
+</sc-for>
+</div>
+</div>
+
+<p style="margin:0;max-width:58ch;font-size:15.5px;line-height:1.6;color:var(--color-neutral-900);text-wrap:pretty">{{ bio }}</p>
+
+<div class="blueprint" style="position:relative" id="specs-wrap">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div id="specs">
+<sc-for list="{{ specs }}" as="s" hint-placeholder-count="6">
+<div style="background:var(--color-bg);padding:13px 16px;display:flex;align-items:baseline;gap:9px">
+<span style="font-family:var(--font-heading);font-weight:600;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-700)">{{ s.k }}</span>
+<span style="flex:1;border-bottom:1px dotted var(--color-neutral-400);transform:translateY(-3px)"></span>
+<span style="font-size:13.5px;font-weight:500;text-align:right">{{ s.v }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div class="blueprint" style="position:relative">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div id="stats">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+<div style="background:var(--color-bg);padding:16px;display:flex;flex-direction:column;gap:3px">
+<span style="font-family:var(--font-heading);font-weight:600;font-size:34px;line-height:1;letter-spacing:-.01em">{{ s.v }}</span>
+<span style="font-family:var(--font-heading);font-weight:600;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-neutral-700)">{{ s.k }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</div>
+
+<sc-if value="{{ showGallery }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:baseline;gap:14px;border-top:1px solid var(--color-divider);padding-top:20px">
+<h2 style="margin:0;font-size:30px">Galerie du véhicule</h2>
+<span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.1em;color:var(--color-neutral-700)">06 PLANCHES</span>
+<span style="flex:1"></span>
+<a href="#page" style="font-size:12.5px">Signaler une photo</a>
+</div>
+<div id="gallery">
+<sc-for list="{{ gallery }}" as="g" hint-placeholder-count="6">
+<figure class="blueprint duotone" style="position:relative;aspect-ratio:4/3;background-color:var(--color-accent-100);background-image:repeating-linear-gradient(135deg,rgba(89,128,166,.26) 0 1.5px,transparent 1.5px 8px);display:grid;place-items:center">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<span style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.14em;color:var(--color-accent-700)">{{ g }}</span>
+</figure>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<div class="blueprint" id="form-plate" style="position:relative;padding:26px 28px 28px;background:var(--color-surface);display:flex;flex-direction:column;gap:18px;scroll-margin-top:80px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap">
+<div>
+<div style="font-family:var(--font-heading);font-weight:600;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--color-accent-700);margin-bottom:4px">Demande de mise en relation</div>
+<h2 style="margin:0;font-size:30px">{{ primaryCta }}</h2>
+</div>
+<p style="margin:0;max-width:36ch;font-size:12.5px;line-height:1.5;color:var(--color-neutral-800);text-wrap:pretty">Vos coordonnées ne sont transmises qu'à ce chauffeur. Aucun numéro n'est publié sur la plateforme.</p>
+</div>
+<div id="form">
+<div class="field"><label>Votre nom</label><input class="input" placeholder="Prénom et nom" /></div>
+<div class="field"><label>Votre email</label><input class="input" type="email" placeholder="vous@exemple.fr" /></div>
+<div class="field"><label>Trajet souhaité</label><input class="input" placeholder="Massy → Orly, 12 mars, 07 h 30" /></div>
+<div class="field"><label>Nombre de passagers</label>
+<select class="input"><option>1 passager</option><option>2 passagers</option><option>3 passagers</option><option>4 passagers ou plus</option></select>
+</div>
+</div>
+<div class="field"><label>Message</label><textarea class="input" placeholder="Deux valises, vol AF1273, merci de confirmer le tarif."></textarea></div>
+<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+<button class="btn btn-primary blueprint" style="position:relative;letter-spacing:.08em;text-transform:uppercase;height:40px;padding-inline:26px">
+<i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>Envoyer la demande</button>
+<button class="btn btn-secondary" style="letter-spacing:.08em;text-transform:uppercase;height:40px">Enregistrer le profil</button>
+<span style="font-size:11.5px;color:var(--color-neutral-700)">Sans engagement · réponse sous 1 h en moyenne</span>
+</div>
+</div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;verified&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Fiche&quot;},&quot;showGallery&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Fiche&quot;},&quot;primaryCta&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Contacter Xiaoqiao&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Fiche&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      name: "Xiaoqiao Chen",
+      initials: "XC",
+      city: "Massy",
+      ref: "RÉF. 208710",
+      vehicle: "Mercedes Classe E",
+      seats: "4 places",
+      rating: "5,0",
+      reviews: "42 avis",
+      verified: this.props.verified ?? true,
+      showGallery: this.props.showGallery ?? true,
+      primaryCta: this.props.primaryCta ?? "Contacter Xiaoqiao",
+      langs: ["中文", "Français", "English"],
+      bio: "Chauffeur VTC basé à Massy depuis 2018, spécialisé dans l'accueil des voyageurs sinophones : pancarte nominative au terminal, aide aux bagages, et suivi du vol en temps réel. Navettes Orly et Roissy à toute heure, forfaits fixes communiqués avant le départ.",
+      specs: [
+        { k: "Langues", v: "中文 · Français · English" },
+        { k: "Véhicule", v: "Mercedes Classe E — 2022" },
+        { k: "Places", v: "4 passagers · 3 valises" },
+        { k: "Zones", v: "Massy · Orly · Roissy · Paris" },
+        { k: "Paiement", v: "CB, espèces, virement" },
+        { k: "Options", v: "Siège enfant, wifi, eau" }
+      ],
+      stats: [
+        { v: "5,0", k: "Note moyenne" },
+        { v: "318", k: "Courses réalisées" },
+        { v: "8 ans", k: "D'expérience" },
+        { v: "98 %", k: "Demandes acceptées" }
+      ],
+      gallery: ["VÉHICULE 01", "VÉHICULE 02", "INTÉRIEUR 03", "COFFRE 04", "VÉHICULE 05", "DÉTAIL 06"]
+    };
+  }
+}
+
+</script>
+</body>
+</html>
