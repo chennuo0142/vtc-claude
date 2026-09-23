@@ -1,5 +1,6 @@
 import { auth, signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
 export default async function CompteEnAttentePage() {
   const session = await auth();
@@ -13,16 +14,16 @@ export default async function CompteEnAttentePage() {
   }
 
   const isRejected = session.user.status === "REJECTED";
+  const dict = await getDictionary();
+  const t = dict.compteEnAttente;
 
   return (
     <div className="mx-auto max-w-md px-6 py-16 text-center">
       <h1 className="text-xl font-bold">
-        {isRejected ? "Demande refusée" : "Compte en attente de validation"}
+        {isRejected ? t.titreRefuse : t.titreEnAttente}
       </h1>
       <p className="mt-2 text-neutral-500">
-        {isRejected
-          ? "Votre demande d'inscription a été refusée par un administrateur."
-          : "Votre demande est en cours d'examen par un administrateur. Vous serez notifié dès qu'elle sera validée."}
+        {isRejected ? t.messageRefuse : t.messageEnAttente}
       </p>
       <form
         action={async () => {
@@ -34,7 +35,7 @@ export default async function CompteEnAttentePage() {
           type="submit"
           className="mt-6 rounded-lg border border-black/10 px-4 py-2 text-sm font-medium hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/10"
         >
-          Se déconnecter
+          {t.seDeconnecter}
         </button>
       </form>
     </div>

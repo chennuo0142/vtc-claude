@@ -30,6 +30,14 @@
   --radius-sm: 2px;
   --radius-md: 4px;
   --radius-lg: 7px;
+
+  /* height of NavBar.tsx's sticky header, used by the admin sidebar to sit flush beneath it */
+  --navbar-h: 58px;
+
+  /* — admin semantic colors (fixed across themes, unlike --color-accent) — */
+  --color-danger: #c2463d;
+  --color-danger-bg: color-mix(in srgb, #c2463d 14%, transparent);
+  --color-highlight: #b8752e;
 }
 
 /* Navy — darker, moodier steel-navy palette */
@@ -174,6 +182,25 @@ a {
 .btn-secondary { background: transparent; }
 .btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
 .btn-block { width: 100%; }
+.btn-sm { padding: 5px 12px; font-size: 13px; min-height: 30px; }
+.btn-danger { background: var(--color-danger); color: #fff; border-color: var(--color-danger); }
+.btn-danger:hover { background: color-mix(in srgb, var(--color-danger) 85%, black); }
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--color-divider);
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0;
+}
+.btn-icon:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.btn-icon:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-icon-danger { color: var(--color-danger); border-color: color-mix(in srgb, var(--color-danger) 40%, var(--color-divider)); }
+.btn-icon-danger:hover { background: var(--color-danger-bg); }
 
 /* — form fields — */
 .field > label {
@@ -209,4 +236,27 @@ textarea.input { min-height: 90px; resize: vertical; }
 .tag-outline {
   border: 1px solid var(--color-accent);
   color: var(--color-accent-700, var(--color-accent));
+}
+
+/* — badges — */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  font-family: var(--font-heading), system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1;
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* — modification diff — */
+.diff-changed {
+  color: var(--color-highlight);
+  font-weight: 600;
 }

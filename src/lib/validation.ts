@@ -33,7 +33,25 @@ export const profilSchema = z.object({
     .optional(),
   vehiculeId: z.string().trim().optional(),
   emailContact: z.email("Email invalide").optional(),
+  nombrePlaces: z.coerce.number().int().min(1, "Le nombre de places doit être positif").max(50).optional(),
+  annee: z.coerce
+    .number()
+    .int()
+    .min(1990, "Année invalide")
+    .max(new Date().getFullYear() + 1, "Année invalide")
+    .optional(),
 });
+
+export const motDePasseSchema = z
+  .object({
+    motDePasseActuel: z.string().min(1, "Le mot de passe actuel est requis"),
+    nouveauMotDePasse: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
+    confirmationMotDePasse: z.string(),
+  })
+  .refine((v) => v.nouveauMotDePasse === v.confirmationMotDePasse, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmationMotDePasse"],
+  });
 
 export const langueEntrySchema = z
   .object({
@@ -47,6 +65,16 @@ export const langueEntrySchema = z
   });
 
 export const languesSchema = z.array(langueEntrySchema).max(3, "3 langues maximum");
+
+export const zonesSchema = z.array(z.string().trim().min(1)).max(4, "4 zones maximum");
+
+export const optionsSchema = z.array(z.string().trim().min(1));
+
+export const modesPaiementSchema = z.array(z.string().trim().min(1));
+
+export const catalogueNomSchema = z.object({
+  nom: z.string().trim().min(1, "Le nom est requis").max(100),
+});
 
 export const contactMessageSchema = z.object({
   nom: z.string().trim().min(1, "Le nom est requis").max(100),
@@ -63,4 +91,24 @@ export const vehiculeSchema = z.object({
   nombrePlaces: z.coerce.number().int().min(1, "Le nombre de places doit être positif").max(50),
   marque: z.string().trim().min(1, "La marque est requise").max(100),
   modele: z.string().trim().min(1, "Le modèle est requis").max(100),
+});
+
+export const chauffeurAdminSchema = z.object({
+  email: z.email("Email invalide"),
+  nom: z.string().trim().min(1, "Le nom est requis").max(100),
+  prenom: z.string().trim().min(1, "Le prénom est requis").max(100),
+  telephone: z
+    .string()
+    .trim()
+    .regex(/^[0-9+ .()-]{6,20}$/, "Numéro de téléphone invalide"),
+  ville: z.string().trim().min(1, "La ville est requise").max(100),
+  codePostal: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{4,10}$/, "Code postal invalide"),
+  password: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .optional()
+    .or(z.literal("")),
 });

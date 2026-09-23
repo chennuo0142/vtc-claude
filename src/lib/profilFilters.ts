@@ -42,6 +42,7 @@ export function buildProfilWhere(filtres: ProfilFiltres): Prisma.UserWhereInput 
 
   return {
     status: "APPROVED",
+    suspended: false,
     profile: { isNot: null, is: profileWhere },
   };
 }

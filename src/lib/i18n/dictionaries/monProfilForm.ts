@@ -1,0 +1,137 @@
+export const monProfilForm = {
+  fr: {
+    retirer: "Retirer",
+    identite: {
+      titre: "Identité",
+      prenom: "Prénom",
+      nom: "Nom",
+      photoAlt: "Photo de profil",
+      photoLabel: "Photo de profil",
+      carteBackgroundLabel: "Image de fond de carte (facultatif)",
+      carteBackgroundAlt: "Fond de carte",
+      bio: "Présentation",
+    },
+    coordonnees: {
+      titre: "Coordonnées",
+      telephone: "Téléphone",
+      email: "Email de contact",
+      emailPlaceholder: "visible sur votre fiche publique",
+      ville: "Ville",
+      codePostal: "Code postal",
+      vehicule: "Véhicule",
+      aucunVehicule: "Aucun véhicule",
+      nombrePlaces: "Nombre de places",
+      annee: "Année du véhicule",
+    },
+    zones: {
+      titre: "Zones de travail (4 maximum)",
+    },
+    optionsVehicule: {
+      titre: "Options du véhicule",
+    },
+    modesPaiement: {
+      titre: "Modes de paiement acceptés",
+    },
+    langues: {
+      titre: "Langues parlées (3 maximum)",
+      nomLanguePlaceholder: "Nom de la langue",
+      niveau: (niveau: number) => `Niveau ${niveau}`,
+    },
+    galerie: {
+      titre: "Galerie photo (6 emplacements)",
+      modifier: "Modifier",
+      ajouterPhoto: "Ajouter une photo",
+    },
+    success: "Modifications envoyées, en attente de validation par un administrateur.",
+  },
+  en: {
+    retirer: "Remove",
+    identite: {
+      titre: "Identity",
+      prenom: "First name",
+      nom: "Last name",
+      photoAlt: "Profile photo",
+      photoLabel: "Profile photo",
+      carteBackgroundLabel: "Card background image (optional)",
+      carteBackgroundAlt: "Card background",
+      bio: "Bio",
+    },
+    coordonnees: {
+      titre: "Contact details",
+      telephone: "Phone",
+      email: "Contact email",
+      emailPlaceholder: "visible on your public listing",
+      ville: "City",
+      codePostal: "Postal code",
+      vehicule: "Vehicle",
+      aucunVehicule: "No vehicle",
+      nombrePlaces: "Number of seats",
+      annee: "Vehicle year",
+    },
+    zones: {
+      titre: "Work areas (4 maximum)",
+    },
+    optionsVehicule: {
+      titre: "Vehicle options",
+    },
+    modesPaiement: {
+      titre: "Accepted payment methods",
+    },
+    langues: {
+      titre: "Spoken languages (3 maximum)",
+      nomLanguePlaceholder: "Language name",
+      niveau: (niveau: number) => `Level ${niveau}`,
+    },
+    galerie: {
+      titre: "Photo gallery (6 slots)",
+      modifier: "Edit",
+      ajouterPhoto: "Add a photo",
+    },
+    success: "Changes submitted, pending validation by an administrator.",
+  },
+  zh: {
+    retirer: "移除",
+    identite: {
+      titre: "身份信息",
+      prenom: "名字",
+      nom: "姓氏",
+      photoAlt: "个人照片",
+      photoLabel: "个人照片",
+      carteBackgroundLabel: "名片背景图（可选）",
+      carteBackgroundAlt: "名片背景",
+      bio: "个人简介",
+    },
+    coordonnees: {
+      titre: "联系方式",
+      telephone: "电话",
+      email: "联系邮箱",
+      emailPlaceholder: "将显示在您的公开资料上",
+      ville: "城市",
+      codePostal: "邮政编码",
+      vehicule: "车辆",
+      aucunVehicule: "无车辆",
+      nombrePlaces: "座位数",
+      annee: "车辆年份",
+    },
+    zones: {
+      titre: "工作区域（最多4个）",
+    },
+    optionsVehicule: {
+      titre: "车辆配置",
+    },
+    modesPaiement: {
+      titre: "接受的支付方式",
+    },
+    langues: {
+      titre: "所讲语言（最多3种）",
+      nomLanguePlaceholder: "语言名称",
+      niveau: (niveau: number) => `等级 ${niveau}`,
+    },
+    galerie: {
+      titre: "照片相册（6个位置）",
+      modifier: "编辑",
+      ajouterPhoto: "添加照片",
+    },
+    success: "修改已提交，正在等待管理员审核。",
+  },
+};

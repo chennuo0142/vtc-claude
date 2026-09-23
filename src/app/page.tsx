@@ -5,6 +5,7 @@ import { getSettings } from "@/lib/settings";
 import ProfileCard from "@/components/ProfileCard";
 import FiltresBar from "@/components/FiltresBar";
 import { buildProfilWhere, matchesLangue, parseFiltresFromSearchParams } from "@/lib/profilFilters";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
 export default async function Home({
   searchParams,
@@ -20,6 +21,8 @@ export default async function Home({
   const sp = await searchParams;
   const { page: pageParam } = sp;
   const filtres = parseFiltresFromSearchParams(sp);
+  const dict = await getDictionary();
+  const t = dict.home;
   const settings = await getSettings();
   const cardsPerPage = settings.cardsPerPage;
 
@@ -72,20 +75,20 @@ export default async function Home({
       <div className="flex flex-col gap-5 px-6 py-6 md:px-8 md:py-6">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div>
-            <div className="kicker mb-1">Annuaire</div>
-            <h1 style={{ fontSize: 42, letterSpacing: "-0.02em" }}>Annuaire des profils</h1>
+            <div className="kicker mb-1">{t.kicker}</div>
+            <h1 style={{ fontSize: 42, letterSpacing: "-0.02em" }}>{t.titre}</h1>
           </div>
           <Link href="/inscription" className="btn btn-primary blueprint relative uppercase tracking-[0.06em]" style={{ fontSize: 13 }}>
             <i className="corner tl" />
             <i className="corner tr" />
             <i className="corner bl" />
             <i className="corner br" />
-            S&apos;inscrire
+            {t.sinscrire}
           </Link>
         </div>
 
         {users.length === 0 ? (
-          <p style={{ color: "var(--color-neutral-700)" }}>Aucun profil ne correspond à ces critères.</p>
+          <p style={{ color: "var(--color-neutral-700)" }}>{t.aucunProfil}</p>
         ) : (
           <div className="grid gap-6" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(208px, 1fr))" }}>
             {users.map((user) => (
@@ -111,7 +114,7 @@ export default async function Home({
         {totalPages > 1 && (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t pt-4" style={{ borderColor: "var(--color-divider)" }}>
             <span className="font-mono text-[10.5px] tracking-[0.08em]" style={{ color: "var(--color-neutral-700)" }}>
-              PAGE {String(currentPage).padStart(2, "0")} / {String(totalPages).padStart(2, "0")} — {total} PROFILS
+              {t.pagination(String(currentPage).padStart(2, "0"), String(totalPages).padStart(2, "0"), total)}
             </span>
             <div className="flex items-center gap-2">
               <Link
@@ -119,14 +122,14 @@ export default async function Home({
                 aria-disabled={currentPage <= 1}
                 className={`btn btn-secondary ${currentPage <= 1 ? "pointer-events-none opacity-40" : ""}`}
               >
-                ← Précédent
+                {t.precedent}
               </Link>
               <Link
                 href={pageHref(currentPage + 1)}
                 aria-disabled={currentPage >= totalPages}
                 className={`btn btn-secondary ${currentPage >= totalPages ? "pointer-events-none opacity-40" : ""}`}
               >
-                Suivant →
+                {t.suivant}
               </Link>
             </div>
           </div>

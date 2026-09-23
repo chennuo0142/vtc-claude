@@ -1,0 +1,32 @@
+export const adminReglages = {
+  fr: {
+    titrePage: "Réglages",
+    descriptionPage: "Paramètres généraux de l'annuaire.",
+    general: "Général",
+    cartesParPageLabel: "Nombre de cartes par page",
+    cartesParPageDescription: "Nombre de profils affichés par page dans l'annuaire public (1 à 100).",
+    apparenceLabel: "Apparence",
+    apparenceDescription: "Palette appliquée à l'annuaire et à l'espace d'administration.",
+    reglagesEnregistres: "Réglages enregistrés !",
+  },
+  en: {
+    titrePage: "Settings",
+    descriptionPage: "General directory settings.",
+    general: "General",
+    cartesParPageLabel: "Number of cards per page",
+    cartesParPageDescription: "Number of profiles shown per page in the public directory (1 to 100).",
+    apparenceLabel: "Appearance",
+    apparenceDescription: "Palette applied to the directory and the admin area.",
+    reglagesEnregistres: "Settings saved!",
+  },
+  zh: {
+    titrePage: "设置",
+    descriptionPage: "目录的常规设置。",
+    general: "常规",
+    cartesParPageLabel: "每页卡片数量",
+    cartesParPageDescription: "公开目录每页显示的资料数量（1 到 100）。",
+    apparenceLabel: "外观",
+    apparenceDescription: "应用于目录和管理后台的配色方案。",
+    reglagesEnregistres: "设置已保存！",
+  },
+};

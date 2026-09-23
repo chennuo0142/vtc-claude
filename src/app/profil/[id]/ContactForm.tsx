@@ -1,8 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "@/lib/i18n/context";
 
 export default function ContactForm({ userId }: { userId: string }) {
+  const { dict } = useLanguage();
+  const t = dict.contactForm;
+  const common = dict.common;
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -24,7 +28,7 @@ export default function ContactForm({ userId }: { userId: string }) {
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? "Une erreur est survenue");
+        throw new Error(data?.error ?? common.erreurGenerique);
       }
 
       setSuccess(true);
@@ -32,7 +36,7 @@ export default function ContactForm({ userId }: { userId: string }) {
       setEmail("");
       setMessage("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+      setError(err instanceof Error ? err.message : common.erreurGenerique);
     } finally {
       setLoading(false);
     }
@@ -44,7 +48,7 @@ export default function ContactForm({ userId }: { userId: string }) {
         className="border px-4 py-3 text-sm"
         style={{ borderColor: "var(--color-accent)", color: "var(--color-accent-800)", background: "var(--color-accent-100)" }}
       >
-        Votre message a été envoyé !
+        {t.succes}
       </p>
     );
   }
@@ -53,11 +57,11 @@ export default function ContactForm({ userId }: { userId: string }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="field">
-          <label htmlFor="contact-nom">Votre nom</label>
+          <label htmlFor="contact-nom">{t.nom}</label>
           <input id="contact-nom" required value={nom} onChange={(e) => setNom(e.target.value)} className="input" />
         </div>
         <div className="field">
-          <label htmlFor="contact-email">Votre email</label>
+          <label htmlFor="contact-email">{t.email}</label>
           <input
             id="contact-email"
             type="email"
@@ -69,7 +73,7 @@ export default function ContactForm({ userId }: { userId: string }) {
         </div>
       </div>
       <div className="field">
-        <label htmlFor="contact-message">Message</label>
+        <label htmlFor="contact-message">{t.message}</label>
         <textarea
           id="contact-message"
           required
@@ -97,7 +101,7 @@ export default function ContactForm({ userId }: { userId: string }) {
           <i className="corner tr" />
           <i className="corner bl" />
           <i className="corner br" />
-          {loading ? "Envoi..." : "Envoyer la demande"}
+          {loading ? t.envoi : t.envoyer}
         </button>
       </div>
     </form>

@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
 export default async function NavBar() {
-  const session = await auth();
+  const [session, dict] = await Promise.all([auth(), getDictionary()]);
+  const t = dict.nav;
 
   return (
     <header
@@ -16,28 +19,28 @@ export default async function NavBar() {
           className="text-[19px] font-semibold uppercase tracking-[0.1em]"
           style={{ fontFamily: "var(--font-heading)" }}
         >
-          Mise en relation
+          {t.brand}
         </span>
       </Link>
 
       {!session && (
         <>
           <Link href="/inscription" className="text-[13.5px] hover:text-[var(--color-accent)]">
-            Devenir chauffeur
+            {t.devenirChauffeur}
           </Link>
           <Link href="/connexion" className="text-[13.5px] hover:text-[var(--color-accent)]">
-            Connexion
+            {t.connexion}
           </Link>
         </>
       )}
       {session?.user.status === "APPROVED" && (
         <Link href="/mon-profil" className="text-[13.5px] hover:text-[var(--color-accent)]">
-          Mon profil
+          {t.monProfil}
         </Link>
       )}
       {session?.user.role === "ADMIN" && (
         <Link href="/admin" className="text-[13.5px] hover:text-[var(--color-accent)]">
-          Admin
+          {t.admin}
         </Link>
       )}
       {session && (
@@ -53,7 +56,7 @@ export default async function NavBar() {
           }}
         >
           <button type="submit" className="text-[13.5px] hover:text-[var(--color-accent)]">
-            Déconnexion
+            {t.deconnexion}
           </button>
         </form>
       )}
@@ -68,11 +71,12 @@ export default async function NavBar() {
           <i className="corner tr" />
           <i className="corner bl" />
           <i className="corner br" />
-          S&apos;inscrire
+          {t.sinscrire}
         </Link>
       )}
 
       <span className="mx-1 h-[18px] w-px" style={{ background: "var(--color-divider)" }} />
+      <LanguageSwitcher />
       <ThemeSwitcher />
     </header>
   );

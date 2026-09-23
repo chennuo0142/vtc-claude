@@ -1,0 +1,32 @@
+export const adminOptions = {
+  fr: {
+    titreAjout: "Ajouter une option",
+    titreModifier: "Modifier l'option",
+    champLabel: "Nom de l'option",
+    titreListe: "Options",
+    descriptionListe: "Services complémentaires affichés sur les profils.",
+    boutonAjouterListe: "Ajouter une option",
+    videMessage: "Aucune option pour le moment.",
+    confirmSuppression: "Supprimer cette option ?",
+  },
+  en: {
+    titreAjout: "Add an option",
+    titreModifier: "Edit option",
+    champLabel: "Option name",
+    titreListe: "Options",
+    descriptionListe: "Additional services shown on profiles.",
+    boutonAjouterListe: "Add an option",
+    videMessage: "No options yet.",
+    confirmSuppression: "Delete this option?",
+  },
+  zh: {
+    titreAjout: "添加选项",
+    titreModifier: "编辑选项",
+    champLabel: "选项名称",
+    titreListe: "选项",
+    descriptionListe: "资料页上显示的附加服务。",
+    boutonAjouterListe: "添加选项",
+    videMessage: "暂无选项。",
+    confirmSuppression: "确定删除此选项吗？",
+  },
+};

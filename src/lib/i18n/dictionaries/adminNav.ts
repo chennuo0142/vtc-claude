@@ -1,0 +1,62 @@
+export const adminNav = {
+  fr: {
+    layout: {
+      administrateur: "Administrateur",
+      voirAnnuaire: "Voir l'annuaire",
+    },
+    sidebar: {
+      moderation: "Modération",
+      utilisateurs: "Utilisateurs",
+      catalogue: "Catalogue",
+      systeme: "Système",
+      demandes: "Demandes",
+      modifications: "Modifications",
+      chauffeurs: "Chauffeurs",
+      vehicules: "Véhicules",
+      zones: "Zones",
+      options: "Options",
+      modesPaiement: "Modes de paiement",
+      reglages: "Réglages",
+    },
+  },
+  en: {
+    layout: {
+      administrateur: "Administrator",
+      voirAnnuaire: "View directory",
+    },
+    sidebar: {
+      moderation: "Moderation",
+      utilisateurs: "Users",
+      catalogue: "Catalog",
+      systeme: "System",
+      demandes: "Requests",
+      modifications: "Modifications",
+      chauffeurs: "Chauffeurs",
+      vehicules: "Vehicles",
+      zones: "Zones",
+      options: "Options",
+      modesPaiement: "Payment methods",
+      reglages: "Settings",
+    },
+  },
+  zh: {
+    layout: {
+      administrateur: "管理员",
+      voirAnnuaire: "查看目录",
+    },
+    sidebar: {
+      moderation: "审核",
+      utilisateurs: "用户",
+      catalogue: "目录管理",
+      systeme: "系统",
+      demandes: "申请",
+      modifications: "修改",
+      chauffeurs: "司机",
+      vehicules: "车辆",
+      zones: "区域",
+      options: "选项",
+      modesPaiement: "支付方式",
+      reglages: "设置",
+    },
+  },
+};

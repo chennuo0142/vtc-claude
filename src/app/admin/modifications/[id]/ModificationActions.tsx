@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { CheckIcon, XIcon } from "@/components/icons";
+import { useLanguage } from "@/lib/i18n/context";
 
 export default function ModificationActions({ id }: { id: string }) {
   const router = useRouter();
+  const { dict } = useLanguage();
+  const t = dict.adminModificationDetail.actions;
   const [loading, setLoading] = useState<"APPROVE" | "REJECT" | null>(null);
 
   async function handleAction(action: "APPROVE" | "REJECT") {
@@ -20,19 +24,13 @@ export default function ModificationActions({ id }: { id: string }) {
 
   return (
     <div className="mt-6 flex gap-3">
-      <button
-        onClick={() => handleAction("APPROVE")}
-        disabled={loading !== null}
-        className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
-      >
-        {loading === "APPROVE" ? "..." : "Approuver"}
+      <button onClick={() => handleAction("APPROVE")} disabled={loading !== null} className="btn btn-primary">
+        <CheckIcon style={{ width: 15, height: 15 }} />
+        {loading === "APPROVE" ? "..." : t.approuver}
       </button>
-      <button
-        onClick={() => handleAction("REJECT")}
-        disabled={loading !== null}
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
-      >
-        {loading === "REJECT" ? "..." : "Rejeter"}
+      <button onClick={() => handleAction("REJECT")} disabled={loading !== null} className="btn btn-danger">
+        <XIcon style={{ width: 15, height: 15 }} />
+        {loading === "REJECT" ? "..." : t.rejeter}
       </button>
     </div>
   );

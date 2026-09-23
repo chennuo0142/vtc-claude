@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminRow from "@/components/admin/AdminRow";
+import InitialsAvatar from "@/components/admin/InitialsAvatar";
+import { CheckIcon, XIcon } from "@/components/icons";
+import { useLanguage } from "@/lib/i18n/context";
 
 type Props = {
   id: string;
@@ -11,10 +15,13 @@ type Props = {
   telephone: string;
   ville: string;
   codePostal: string;
+  last?: boolean;
 };
 
-export default function AdminDemandeRow({ id, email, nom, prenom, telephone, ville, codePostal }: Props) {
+export default function AdminDemandeRow({ id, email, nom, prenom, telephone, ville, codePostal, last }: Props) {
   const router = useRouter();
+  const { dict } = useLanguage();
+  const t = dict.adminDashboard;
   const [loading, setLoading] = useState<"APPROVE" | "REJECT" | null>(null);
 
   async function handleAction(action: "APPROVE" | "REJECT") {
@@ -29,32 +36,32 @@ export default function AdminDemandeRow({ id, email, nom, prenom, telephone, vil
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-4 py-4">
-      <div>
-        <p className="font-medium">
-          {prenom} {nom}
-        </p>
-        <p className="text-sm text-neutral-500">{email}</p>
-        <p className="text-sm text-neutral-500">
-          {telephone} · {ville} {codePostal}
-        </p>
-      </div>
-      <div className="flex gap-2">
-        <button
-          onClick={() => handleAction("APPROVE")}
-          disabled={loading !== null}
-          className="rounded-lg bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
-        >
-          {loading === "APPROVE" ? "..." : "Approuver"}
-        </button>
-        <button
-          onClick={() => handleAction("REJECT")}
-          disabled={loading !== null}
-          className="rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
-        >
-          {loading === "REJECT" ? "..." : "Rejeter"}
-        </button>
-      </div>
-    </div>
+    <AdminRow
+      last={last}
+      leading={<InitialsAvatar initials={`${prenom[0] ?? ""}${nom[0] ?? ""}`} />}
+      title={`${prenom} ${nom}`}
+      subtitle={email}
+      meta={`${telephone} · ${ville} ${codePostal}`}
+      actions={
+        <>
+          <button
+            onClick={() => handleAction("APPROVE")}
+            disabled={loading !== null}
+            className="btn btn-primary btn-sm"
+          >
+            <CheckIcon style={{ width: 14, height: 14 }} />
+            {loading === "APPROVE" ? "..." : t.approuver}
+          </button>
+          <button
+            onClick={() => handleAction("REJECT")}
+            disabled={loading !== null}
+            className="btn btn-danger btn-sm"
+          >
+            <XIcon style={{ width: 14, height: 14 }} />
+            {loading === "REJECT" ? "..." : t.rejeter}
+          </button>
+        </>
+      }
+    />
   );
 }

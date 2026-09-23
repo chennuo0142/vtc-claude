@@ -1,0 +1,32 @@
+export const adminModesPaiement = {
+  fr: {
+    titreAjout: "Ajouter un mode de paiement",
+    titreModifier: "Modifier le mode de paiement",
+    champLabel: "Nom du mode de paiement",
+    titreListe: "Modes de paiement",
+    descriptionListe: "Moyens de paiement acceptés par les chauffeurs.",
+    boutonAjouterListe: "Ajouter un mode",
+    videMessage: "Aucun mode de paiement pour le moment.",
+    confirmSuppression: "Supprimer ce mode de paiement ?",
+  },
+  en: {
+    titreAjout: "Add a payment method",
+    titreModifier: "Edit payment method",
+    champLabel: "Payment method name",
+    titreListe: "Payment methods",
+    descriptionListe: "Payment methods accepted by drivers.",
+    boutonAjouterListe: "Add a method",
+    videMessage: "No payment methods yet.",
+    confirmSuppression: "Delete this payment method?",
+  },
+  zh: {
+    titreAjout: "添加支付方式",
+    titreModifier: "编辑支付方式",
+    champLabel: "支付方式名称",
+    titreListe: "支付方式",
+    descriptionListe: "司机接受的支付方式。",
+    boutonAjouterListe: "添加方式",
+    videMessage: "暂无支付方式。",
+    confirmSuppression: "确定删除此支付方式吗？",
+  },
+};

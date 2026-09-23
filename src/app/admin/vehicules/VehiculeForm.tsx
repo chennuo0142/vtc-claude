@@ -2,7 +2,18 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CATEGORIE_LABELS } from "@/lib/vehicule";
+import { useLanguage } from "@/lib/i18n/context";
+
+function Corners() {
+  return (
+    <>
+      <i className="corner tl" />
+      <i className="corner tr" />
+      <i className="corner bl" />
+      <i className="corner br" />
+    </>
+  );
+}
 
 type VehiculeInitial = {
   id: string;
@@ -15,9 +26,17 @@ type VehiculeInitial = {
 
 export default function VehiculeForm({ vehicule }: { vehicule?: VehiculeInitial }) {
   const router = useRouter();
+  const { dict } = useLanguage();
+  const t = dict.adminVehicules.form;
+  const [preview, setPreview] = useState<string | null>(vehicule?.photoUrl ?? null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const isEdit = Boolean(vehicule);
+
+  function handlePhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (file) setPreview(URL.createObjectURL(file));
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,98 +51,95 @@ export default function VehiculeForm({ vehicule }: { vehicule?: VehiculeInitial 
       const res = await fetch(url, { method: isEdit ? "PATCH" : "POST", body: formData });
       if (!res.ok) {
         const data = await res.json().catch(() => null);
-        throw new Error(data?.error ?? "Une erreur est survenue");
+        throw new Error(data?.error ?? t.erreurGenerique);
       }
       const result = await res.json();
       router.push(`/admin/vehicules/${result.id}`);
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Une erreur est survenue");
+      setError(err instanceof Error ? err.message : t.erreurGenerique);
       setLoading(false);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium">Catégorie</span>
+      <div className="field">
+        <label htmlFor="vf-categorie">{t.categorie}</label>
         <select
+          id="vf-categorie"
           name="categorie"
           required
           defaultValue={vehicule?.categorie ?? ""}
-          className="rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
+          className="input"
         >
-          <option value="">Sélectionner une catégorie</option>
-          {Object.entries(CATEGORIE_LABELS).map(([value, label]) => (
+          <option value="">{t.selectionnerCategorie}</option>
+          {Object.entries(dict.common.categories).map(([value, label]) => (
             <option key={value} value={value}>
               {label}
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium">Nombre de places</span>
+      <div className="field">
+        <label htmlFor="vf-nombrePlaces">{t.nombrePlaces}</label>
         <input
+          id="vf-nombrePlaces"
           type="number"
           name="nombrePlaces"
           min={1}
           max={50}
           required
           defaultValue={vehicule?.nombrePlaces}
-          className="rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
+          className="input"
         />
-      </label>
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium">Marque</span>
-        <input
-          type="text"
-          name="marque"
-          required
-          defaultValue={vehicule?.marque}
-          className="rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
-        />
-      </label>
+      <div className="field">
+        <label htmlFor="vf-marque">{t.marque}</label>
+        <input id="vf-marque" type="text" name="marque" required defaultValue={vehicule?.marque} className="input" />
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium">Modèle</span>
-        <input
-          type="text"
-          name="modele"
-          required
-          defaultValue={vehicule?.modele}
-          className="rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
-        />
-      </label>
+      <div className="field">
+        <label htmlFor="vf-modele">{t.modele}</label>
+        <input id="vf-modele" type="text" name="modele" required defaultValue={vehicule?.modele} className="input" />
+      </div>
 
-      <label className="flex flex-col gap-1 text-sm">
-        <span className="font-medium">Photo{isEdit ? " (laisser vide pour conserver l'actuelle)" : ""}</span>
-        {vehicule?.photoUrl && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={vehicule.photoUrl}
-            alt=""
-            className="mb-2 h-24 w-24 rounded-lg object-cover"
+      <div className="flex items-center gap-4">
+        <div className="blueprint relative h-20 w-20 shrink-0 overflow-hidden">
+          <Corners />
+          {preview ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={preview} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <div className="hatch h-full w-full" />
+          )}
+        </div>
+        <div className="field m-0">
+          <label htmlFor="vf-photo">{t.photo}{isEdit ? t.photoConserverActuelle : ""}</label>
+          <input
+            id="vf-photo"
+            type="file"
+            name="photo"
+            accept="image/png,image/jpeg,image/webp"
+            onChange={handlePhotoChange}
+            className="text-sm"
           />
-        )}
-        <input type="file" name="photo" accept="image/png,image/jpeg,image/webp" />
-      </label>
+        </div>
+      </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p style={{ color: "var(--color-danger)" }}>{error}</p>}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
-      >
+      <button type="submit" disabled={loading} className="btn btn-primary blueprint relative mt-2 self-start">
+        <Corners />
         {loading
           ? isEdit
-            ? "Enregistrement..."
-            : "Ajout..."
+            ? t.enregistrement
+            : t.ajout
           : isEdit
-            ? "Enregistrer les modifications"
-            : "Ajouter le véhicule"}
+            ? t.enregistrerModifications
+            : t.ajouterVehicule}
       </button>
     </form>
   );

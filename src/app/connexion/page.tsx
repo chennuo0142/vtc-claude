@@ -3,9 +3,13 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useLanguage } from "@/lib/i18n/context";
+import PasswordInput from "@/components/PasswordInput";
 
 export default function ConnexionPage() {
   const router = useRouter();
+  const { dict } = useLanguage();
+  const t = dict.connexion;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +29,7 @@ export default function ConnexionPage() {
     setLoading(false);
 
     if (res?.error) {
-      setError("Email ou mot de passe incorrect");
+      setError(t.erreurIdentifiants);
       return;
     }
 
@@ -35,10 +39,10 @@ export default function ConnexionPage() {
 
   return (
     <div className="mx-auto max-w-md px-6 py-12">
-      <h1 className="mb-6 text-xl font-bold">Connexion</h1>
+      <h1 className="mb-6 text-xl font-bold">{t.titre}</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium">Email</span>
+          <span className="font-medium">{t.email}</span>
           <input
             type="email"
             required
@@ -48,13 +52,12 @@ export default function ConnexionPage() {
           />
         </label>
         <label className="flex flex-col gap-1 text-sm">
-          <span className="font-medium">Mot de passe</span>
-          <input
-            type="password"
+          <span className="font-medium">{t.motDePasse}</span>
+          <PasswordInput
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
+            className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
           />
         </label>
 
@@ -65,7 +68,7 @@ export default function ConnexionPage() {
           disabled={loading}
           className="mt-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
         >
-          {loading ? "Connexion..." : "Se connecter"}
+          {loading ? t.connexionEnCours : t.seConnecter}
         </button>
       </form>
     </div>

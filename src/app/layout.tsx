@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import Script from "next/script";
 import NavBar from "@/components/NavBar";
+import { LanguageProvider } from "@/lib/i18n/context";
+import { getLocale } from "@/lib/i18n/dictionary";
 import "./globals.css";
 
 const barlow = Barlow({
@@ -23,18 +25,23 @@ export const metadata: Metadata = {
 
 const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
+
   return (
     <html
-      lang="fr"
+      lang={locale}
       className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
-        <NavBar />
-        <main className="flex-1">{children}</main>
+        <LanguageProvider locale={locale}>
+          <NavBar />
+          <main className="flex-1">{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );

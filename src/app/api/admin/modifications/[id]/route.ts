@@ -21,7 +21,10 @@ export async function PATCH(
     return NextResponse.json({ error: "Action invalide" }, { status: 400 });
   }
 
-  const profile = await prisma.profile.findUnique({ where: { id } });
+  const profile = await prisma.profile.findUnique({
+    where: { id },
+    include: { pendingZones: true, pendingOptions: true, pendingModesPaiement: true },
+  });
   if (!profile) {
     return NextResponse.json({ error: "Profil introuvable" }, { status: 404 });
   }
@@ -39,12 +42,20 @@ export async function PATCH(
     pendingGalerie: [],
     pendingEmailContact: null,
     pendingLangues: [],
+    pendingNombrePlaces: null,
+    pendingAnnee: null,
   };
 
   if (action === "REJECT") {
     const updated = await prisma.profile.update({
       where: { id },
-      data: { ...clearedPending, pendingVehicule: { disconnect: true } },
+      data: {
+        ...clearedPending,
+        pendingVehicule: { disconnect: true },
+        pendingZones: { set: [] },
+        pendingOptions: { set: [] },
+        pendingModesPaiement: { set: [] },
+      },
     });
     return NextResponse.json(updated);
   }
@@ -65,9 +76,17 @@ export async function PATCH(
         ? { connect: { id: profile.pendingVehiculeId } }
         : { disconnect: true },
       emailContact: profile.pendingEmailContact ?? profile.emailContact,
+      nombrePlaces: profile.pendingNombrePlaces ?? profile.nombrePlaces,
+      annee: profile.pendingAnnee ?? profile.annee,
       langues: (profile.pendingLangues ?? profile.langues ?? []) as Prisma.InputJsonValue,
+      zones: { set: profile.pendingZones.map((z) => ({ id: z.id })) },
+      options: { set: profile.pendingOptions.map((o) => ({ id: o.id })) },
+      modesPaiement: { set: profile.pendingModesPaiement.map((m) => ({ id: m.id })) },
       ...clearedPending,
       pendingVehicule: { disconnect: true },
+      pendingZones: { set: [] },
+      pendingOptions: { set: [] },
+      pendingModesPaiement: { set: [] },
     },
   });
 

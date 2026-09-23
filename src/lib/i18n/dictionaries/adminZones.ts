@@ -1,0 +1,32 @@
+export const adminZones = {
+  fr: {
+    titreAjout: "Ajouter une zone",
+    titreModifier: "Modifier la zone",
+    champLabel: "Nom de la zone",
+    titreListe: "Zones de travail",
+    descriptionListe: "Secteurs géographiques que les chauffeurs peuvent couvrir.",
+    boutonAjouterListe: "Ajouter une zone",
+    videMessage: "Aucune zone pour le moment.",
+    confirmSuppression: "Supprimer cette zone ?",
+  },
+  en: {
+    titreAjout: "Add a zone",
+    titreModifier: "Edit zone",
+    champLabel: "Zone name",
+    titreListe: "Work zones",
+    descriptionListe: "Geographic areas that drivers can cover.",
+    boutonAjouterListe: "Add a zone",
+    videMessage: "No zones yet.",
+    confirmSuppression: "Delete this zone?",
+  },
+  zh: {
+    titreAjout: "添加区域",
+    titreModifier: "编辑区域",
+    champLabel: "区域名称",
+    titreListe: "工作区域",
+    descriptionListe: "司机可以覆盖的地理区域。",
+    boutonAjouterListe: "添加区域",
+    videMessage: "暂无区域。",
+    confirmSuppression: "确定删除此区域吗？",
+  },
+};

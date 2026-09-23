@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatLangue, parseLangues } from "@/lib/langues";
-import { CarIcon } from "@/components/icons";
+import { CarIcon, UserIcon } from "@/components/icons";
+import { getDictionary } from "@/lib/i18n/dictionary";
 
 type ProfileCardProps = {
   id: string;
@@ -18,7 +19,7 @@ type ProfileCardProps = {
   vehiculeModele?: string | null;
 };
 
-export default function ProfileCard({
+export default async function ProfileCard({
   id,
   nom,
   prenom,
@@ -31,11 +32,11 @@ export default function ProfileCard({
   vehiculeMarque,
   vehiculeModele,
 }: ProfileCardProps) {
+  const dict = await getDictionary();
+  const t = dict.profileCard;
   const vehiculeLabel = [vehiculeMarque, vehiculeModele].filter(Boolean).join(" ");
   const extrait = bio ? (bio.length > 100 ? `${bio.slice(0, 100)}…` : bio) : null;
   const languesParlees = parseLangues(langues).map(formatLangue);
-  const initiales = `${prenom.charAt(0)}${nom.charAt(0)}`;
-  const image = carteBackgroundUrl || photoUrl;
 
   return (
     <Link href={`/profil/${id}`} className="blueprint flex flex-col" style={{ background: "var(--color-bg)" }}>
@@ -48,18 +49,25 @@ export default function ProfileCard({
         className="relative aspect-[4/5] border-b"
         style={{ borderColor: "var(--color-divider)" }}
       >
-        {image ? (
-          <Image src={image} alt={`${prenom} ${nom}`} fill className="object-cover" />
+        {carteBackgroundUrl ? (
+          <Image src={carteBackgroundUrl} alt="" fill className="object-cover" />
         ) : (
-          <div className="hatch flex h-full w-full items-center justify-center">
-            <span
-              className="text-[46px] font-semibold tracking-[0.06em]"
-              style={{ fontFamily: "var(--font-heading)", color: "var(--color-accent-700)" }}
-            >
-              {initiales}
-            </span>
-          </div>
+          <div className="hatch h-full w-full" />
         )}
+
+        <div
+          className="absolute left-1/2 top-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full"
+          style={{ background: "var(--color-accent-100)", boxShadow: "0 0 0 4px var(--color-bg)" }}
+        >
+          {photoUrl ? (
+            <Image src={photoUrl} alt={`${prenom} ${nom}`} fill className="object-cover" />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <UserIcon className="h-10 w-10" style={{ color: "var(--color-accent-700)" }} />
+            </div>
+          )}
+        </div>
+
         {ville && (
           <span
             className="absolute left-0 top-0 px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.12em]"
@@ -116,7 +124,7 @@ export default function ProfileCard({
 
       <div className="p-3.5 pt-3">
         <span className="btn btn-secondary btn-block uppercase tracking-[0.08em] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] hover:border-[var(--color-accent)]">
-          Voir le profil
+          {t.voirLeProfil}
         </span>
       </div>
     </Link>

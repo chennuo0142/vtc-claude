@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { profilSchema, languesSchema } from "@/lib/validation";
+import { profilSchema, languesSchema, zonesSchema, optionsSchema, modesPaiementSchema } from "@/lib/validation";
 import { saveUploadedPhoto, UploadError } from "@/lib/upload";
 import type { Prisma } from "@/generated/prisma/client";
 
@@ -36,6 +36,8 @@ export async function PATCH(request: Request) {
     codePostal: formData.get("codePostal")?.toString() || undefined,
     vehiculeId: formData.get("vehiculeId")?.toString() || undefined,
     emailContact: formData.get("emailContact")?.toString() || undefined,
+    nombrePlaces: formData.get("nombrePlaces")?.toString() || undefined,
+    annee: formData.get("annee")?.toString() || undefined,
   });
 
   if (!parsed.success) {
@@ -45,7 +47,8 @@ export async function PATCH(request: Request) {
     );
   }
 
-  const { nom, prenom, bio, telephone, ville, codePostal, vehiculeId, emailContact } = parsed.data;
+  const { nom, prenom, bio, telephone, ville, codePostal, vehiculeId, emailContact, nombrePlaces, annee } =
+    parsed.data;
 
   const languesRaw = formData.get("langues")?.toString();
   let langues: unknown;
@@ -63,6 +66,52 @@ export async function PATCH(request: Request) {
       );
     }
     langues = parsedLangues.data;
+  }
+
+  function parseIdList(
+    fieldName: string,
+    schema: typeof zonesSchema | typeof optionsSchema | typeof modesPaiementSchema
+  ): string[] | null {
+    const raw = formData.get(fieldName)?.toString();
+    if (!raw) return null;
+    let value: unknown;
+    try {
+      value = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+    const result = schema.safeParse(value);
+    return result.success ? result.data : null;
+  }
+
+  const zoneIdsRaw = formData.get("zoneIds")?.toString();
+  let zoneIds: string[] | undefined;
+  if (zoneIdsRaw) {
+    const parsedZoneIds = parseIdList("zoneIds", zonesSchema);
+    if (!parsedZoneIds) {
+      return NextResponse.json({ error: "Zones invalides" }, { status: 400 });
+    }
+    zoneIds = parsedZoneIds;
+  }
+
+  const optionIdsRaw = formData.get("optionIds")?.toString();
+  let optionIds: string[] | undefined;
+  if (optionIdsRaw) {
+    const parsedOptionIds = parseIdList("optionIds", optionsSchema);
+    if (!parsedOptionIds) {
+      return NextResponse.json({ error: "Options invalides" }, { status: 400 });
+    }
+    optionIds = parsedOptionIds;
+  }
+
+  const modePaiementIdsRaw = formData.get("modePaiementIds")?.toString();
+  let modePaiementIds: string[] | undefined;
+  if (modePaiementIdsRaw) {
+    const parsedModePaiementIds = parseIdList("modePaiementIds", modesPaiementSchema);
+    if (!parsedModePaiementIds) {
+      return NextResponse.json({ error: "Modes de paiement invalides" }, { status: 400 });
+    }
+    modePaiementIds = parsedModePaiementIds;
   }
 
   try {
@@ -108,10 +157,17 @@ export async function PATCH(request: Request) {
         pendingCodePostal: codePostal ?? profile.pendingCodePostal ?? profile.codePostal,
         pendingVehicule: vehiculeId ? { connect: { id: vehiculeId } } : { disconnect: true },
         pendingEmailContact: emailContact ?? profile.pendingEmailContact ?? profile.emailContact,
+        pendingNombrePlaces: nombrePlaces ?? profile.pendingNombrePlaces ?? profile.nombrePlaces,
+        pendingAnnee: annee ?? profile.pendingAnnee ?? profile.annee,
         pendingPhotoUrl,
         pendingCarteBackgroundUrl,
         pendingGalerie,
         pendingLangues: (langues ?? profile.pendingLangues ?? profile.langues ?? []) as Prisma.InputJsonValue,
+        ...(zoneIds !== undefined && { pendingZones: { set: zoneIds.map((id) => ({ id })) } }),
+        ...(optionIds !== undefined && { pendingOptions: { set: optionIds.map((id) => ({ id })) } }),
+        ...(modePaiementIds !== undefined && {
+          pendingModesPaiement: { set: modePaiementIds.map((id) => ({ id })) },
+        }),
         hasPendingChanges: true,
       },
     });

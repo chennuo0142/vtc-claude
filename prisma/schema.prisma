@@ -34,6 +34,7 @@ model User {
   role            Role          @default(USER)
   status          RequestStatus @default(PENDING)
   numeroReference String?       @unique
+  suspended       Boolean       @default(false)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -53,6 +54,8 @@ model Profile {
   emailContact String?
   galerie      String[] @default([])
   langues      Json     @default("[]")
+  nombrePlaces Int?
+  annee        Int?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -60,6 +63,10 @@ model Profile {
   userId   String    @unique
   vehicule Vehicule? @relation("ProfileVehicule", fields: [vehiculeId], references: [id], onDelete: SetNull)
   vehiculeId String?
+
+  zones         Zone[]         @relation("ProfileZones")
+  options       Option[]       @relation("ProfileOptions")
+  modesPaiement ModePaiement[] @relation("ProfileModesPaiement")
 
   hasPendingChanges    Boolean  @default(false)
   pendingNom           String?
@@ -73,9 +80,15 @@ model Profile {
   pendingEmailContact  String?
   pendingGalerie       String[] @default([])
   pendingLangues       Json     @default("[]")
+  pendingNombrePlaces  Int?
+  pendingAnnee         Int?
 
   pendingVehicule   Vehicule? @relation("ProfilePendingVehicule", fields: [pendingVehiculeId], references: [id], onDelete: SetNull)
   pendingVehiculeId String?
+
+  pendingZones         Zone[]         @relation("ProfilePendingZones")
+  pendingOptions       Option[]       @relation("ProfilePendingOptions")
+  pendingModesPaiement ModePaiement[] @relation("ProfilePendingModesPaiement")
 
   messages ContactMessage[]
 }
@@ -108,4 +121,34 @@ model Vehicule {
 
   profiles        Profile[] @relation("ProfileVehicule")
   pendingProfiles Profile[] @relation("ProfilePendingVehicule")
+}
+
+model Zone {
+  id        String   @id @default(cuid())
+  nom       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profiles        Profile[] @relation("ProfileZones")
+  pendingProfiles Profile[] @relation("ProfilePendingZones")
+}
+
+model Option {
+  id        String   @id @default(cuid())
+  nom       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profiles        Profile[] @relation("ProfileOptions")
+  pendingProfiles Profile[] @relation("ProfilePendingOptions")
+}
+
+model ModePaiement {
+  id        String   @id @default(cuid())
+  nom       String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profiles        Profile[] @relation("ProfileModesPaiement")
+  pendingProfiles Profile[] @relation("ProfilePendingModesPaiement")
 }

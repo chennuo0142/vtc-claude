@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { PhoneIcon, MailIcon, ArrowLeftIcon, PinIcon, CarIcon } from "@/components/icons";
 import { parseLangues, formatLangue } from "@/lib/langues";
+import { getDictionary } from "@/lib/i18n/dictionary";
 import ContactForm from "./ContactForm";
 
 export default async function ProfilPage({
@@ -12,6 +13,8 @@ export default async function ProfilPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const dict = await getDictionary();
+  const t = dict.profilDetail;
 
   const user = await prisma.user.findFirst({
     where: { id, status: "APPROVED" },
@@ -36,7 +39,7 @@ export default async function ProfilPage({
         style={{ fontFamily: "var(--font-heading)", color: "var(--color-accent-700)" }}
       >
         <ArrowLeftIcon className="h-3.5 w-3.5" />
-        Retour à l&apos;annuaire
+        {t.retourAnnuaire}
       </Link>
 
       <div className="grid gap-8 md:grid-cols-[340px_minmax(0,1fr)] md:items-start">
@@ -73,7 +76,7 @@ export default async function ProfilPage({
             <i className="corner tr" />
             <i className="corner bl" />
             <i className="corner br" />
-            <h6 style={{ color: "var(--color-neutral-700)" }}>Contact direct</h6>
+            <h6 style={{ color: "var(--color-neutral-700)" }}>{t.contactDirect}</h6>
             <a
               href={`tel:${telephone}`}
               className="flex items-center gap-2.5 text-[14.5px] no-underline"
@@ -101,17 +104,17 @@ export default async function ProfilPage({
               <i className="corner tr" />
               <i className="corner bl" />
               <i className="corner br" />
-              Contacter {prenom}
+              {t.contacterPrenom(prenom)}
             </a>
             <span className="text-center text-[11.5px]" style={{ color: "var(--color-neutral-700)" }}>
-              Réponse habituelle en moins d&apos;une heure
+              {t.reponseHabituelle}
             </span>
           </div>
         </div>
 
         <div className="flex min-w-0 flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <div className="kicker">Chauffeur VTC</div>
+            <div className="kicker">{t.kicker}</div>
             <h1 style={{ fontSize: 44, lineHeight: 1, letterSpacing: "-0.02em" }}>
               {prenom} {nom}
             </h1>
@@ -144,7 +147,7 @@ export default async function ProfilPage({
             </p>
           ) : (
             <p className="m-0" style={{ color: "var(--color-neutral-700)" }}>
-              Aucune présentation renseignée.
+              {t.aucuneBio}
             </p>
           )}
 
@@ -170,9 +173,9 @@ export default async function ProfilPage({
       {photosGalerie.length > 0 && (
         <div className="flex flex-col gap-4 border-t pt-5" style={{ borderColor: "var(--color-divider)" }}>
           <div className="flex items-baseline gap-3.5">
-            <h2 style={{ fontSize: 28 }}>Galerie</h2>
+            <h2 style={{ fontSize: 28 }}>{t.galerie}</h2>
             <span className="font-mono text-[10.5px] tracking-[0.1em]" style={{ color: "var(--color-neutral-700)" }}>
-              {String(photosGalerie.length).padStart(2, "0")} PLANCHES
+              {t.planches(photosGalerie.length)}
             </span>
           </div>
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
@@ -199,8 +202,8 @@ export default async function ProfilPage({
         <i className="corner bl" />
         <i className="corner br" />
         <div>
-          <div className="kicker mb-1">Demande de mise en relation</div>
-          <h2 style={{ fontSize: 28 }}>Contacter {prenom}</h2>
+          <div className="kicker mb-1">{t.demandeMiseEnRelation}</div>
+          <h2 style={{ fontSize: 28 }}>{t.contacterPrenom(prenom)}</h2>
         </div>
         <ContactForm userId={user.id} />
       </div>

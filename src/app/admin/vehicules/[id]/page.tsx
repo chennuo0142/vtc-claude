@@ -2,8 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { CATEGORIE_LABELS } from "@/lib/vehicule";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import DeleteVehiculeButton from "../liste/DeleteVehiculeButton";
+
+function Corners() {
+  return (
+    <>
+      <i className="corner tl" />
+      <i className="corner tr" />
+      <i className="corner bl" />
+      <i className="corner br" />
+    </>
+  );
+}
 
 export default async function VehiculeFichePage({
   params,
@@ -11,6 +23,9 @@ export default async function VehiculeFichePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
+  const dict = await getDictionary();
+  const t = dict.adminVehicules;
 
   const vehicule = await prisma.vehicule.findUnique({ where: { id } });
 
@@ -20,12 +35,15 @@ export default async function VehiculeFichePage({
 
   return (
     <div className="mx-auto max-w-xl px-6 py-12">
-      <Link href="/admin/vehicules/liste" className="mb-6 inline-block text-sm text-neutral-500 hover:underline">
-        ← Retour à la liste
-      </Link>
+      <AdminPageHeader
+        title={`${vehicule.marque} ${vehicule.modele}`}
+        description={`${dict.common.categories[vehicule.categorie]} · ${t.liste.places(vehicule.nombrePlaces)}`}
+      />
 
-      <div className="overflow-hidden rounded-xl border border-black/10 bg-white shadow-sm dark:border-white/10 dark:bg-neutral-900">
-        <div className="relative aspect-video w-full bg-neutral-100 dark:bg-neutral-800">
+      <div className="blueprint relative overflow-hidden" style={{ background: "var(--color-surface)" }}>
+        <Corners />
+        <div className="blueprint relative aspect-video w-full overflow-hidden">
+          <Corners />
           {vehicule.photoUrl ? (
             <Image
               src={vehicule.photoUrl}
@@ -34,27 +52,19 @@ export default async function VehiculeFichePage({
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center text-neutral-400">
-              Pas de photo
-            </div>
+            <div className="hatch h-full w-full" />
           )}
         </div>
         <div className="p-6">
-          <h1 className="text-xl font-bold">
-            {vehicule.marque} {vehicule.modele}
-          </h1>
-          <p className="mt-2 text-neutral-500">
-            {CATEGORIE_LABELS[vehicule.categorie]} · {vehicule.nombrePlaces} places
-          </p>
-
-          <div className="mt-6 flex gap-3">
+          <div className="flex gap-3">
             <Link
               href={`/admin/vehicules/${vehicule.id}/modifier`}
-              className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+              className="btn btn-primary blueprint relative"
             >
-              Modifier
+              <Corners />
+              {t.detail.modifier}
             </Link>
-            <DeleteVehiculeButton id={vehicule.id} redirectTo="/admin/vehicules/liste" />
+            <DeleteVehiculeButton id={vehicule.id} redirectTo="/admin/vehicules/liste" variant="text" />
           </div>
         </div>
       </div>

@@ -1,0 +1,32 @@
+export const changerMotDePasse = {
+  fr: {
+    titre: "Mot de passe",
+    motDePasseActuel: "Mot de passe actuel",
+    nouveauMotDePasse: "Nouveau mot de passe",
+    confirmationMotDePasse: "Confirmer le nouveau mot de passe",
+    bouton: "Modifier le mot de passe",
+    boutonEnCours: "Modification...",
+    success: "Mot de passe modifié avec succès.",
+    erreurCorrespondance: "Les mots de passe ne correspondent pas",
+  },
+  en: {
+    titre: "Password",
+    motDePasseActuel: "Current password",
+    nouveauMotDePasse: "New password",
+    confirmationMotDePasse: "Confirm new password",
+    bouton: "Change password",
+    boutonEnCours: "Changing...",
+    success: "Password changed successfully.",
+    erreurCorrespondance: "Passwords do not match",
+  },
+  zh: {
+    titre: "密码",
+    motDePasseActuel: "当前密码",
+    nouveauMotDePasse: "新密码",
+    confirmationMotDePasse: "确认新密码",
+    bouton: "修改密码",
+    boutonEnCours: "修改中...",
+    success: "密码修改成功。",
+    erreurCorrespondance: "两次输入的密码不一致",
+  },
+};

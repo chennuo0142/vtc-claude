@@ -1,0 +1,122 @@
+export const adminVehicules = {
+  fr: {
+    ajouter: {
+      titre: "Ajouter un véhicule",
+    },
+    liste: {
+      titre: "Véhicules",
+      description: "Modèles proposés aux chauffeurs lors de la création de leur profil.",
+      ajouterVehicule: "Ajouter un véhicule",
+      aucunVehicule: "Aucun véhicule pour le moment.",
+      places: (n: number) => `${n} place${n > 1 ? "s" : ""}`,
+      consulter: "Consulter",
+      modifier: "Modifier",
+    },
+    detail: {
+      modifier: "Modifier",
+    },
+    modifierPage: {
+      retourFiche: "← Retour à la fiche",
+      titre: "Modifier le véhicule",
+    },
+    form: {
+      categorie: "Catégorie",
+      selectionnerCategorie: "Sélectionner une catégorie",
+      nombrePlaces: "Nombre de places",
+      marque: "Marque",
+      modele: "Modèle",
+      photo: "Photo",
+      photoConserverActuelle: " (laisser vide pour conserver l'actuelle)",
+      enregistrement: "Enregistrement...",
+      ajout: "Ajout...",
+      enregistrerModifications: "Enregistrer les modifications",
+      ajouterVehicule: "Ajouter le véhicule",
+      erreurGenerique: "Une erreur est survenue",
+    },
+    deleteButton: {
+      confirm: "Supprimer ce véhicule ?",
+      supprimer: "Supprimer",
+      suppression: "Suppression...",
+    },
+  },
+  en: {
+    ajouter: {
+      titre: "Add a vehicle",
+    },
+    liste: {
+      titre: "Vehicles",
+      description: "Models offered to drivers when creating their profile.",
+      ajouterVehicule: "Add a vehicle",
+      aucunVehicule: "No vehicles yet.",
+      places: (n: number) => `${n} seat${n > 1 ? "s" : ""}`,
+      consulter: "View",
+      modifier: "Edit",
+    },
+    detail: {
+      modifier: "Edit",
+    },
+    modifierPage: {
+      retourFiche: "← Back to sheet",
+      titre: "Edit vehicle",
+    },
+    form: {
+      categorie: "Category",
+      selectionnerCategorie: "Select a category",
+      nombrePlaces: "Number of seats",
+      marque: "Make",
+      modele: "Model",
+      photo: "Photo",
+      photoConserverActuelle: " (leave empty to keep the current one)",
+      enregistrement: "Saving...",
+      ajout: "Adding...",
+      enregistrerModifications: "Save changes",
+      ajouterVehicule: "Add vehicle",
+      erreurGenerique: "An error occurred",
+    },
+    deleteButton: {
+      confirm: "Delete this vehicle?",
+      supprimer: "Delete",
+      suppression: "Deleting...",
+    },
+  },
+  zh: {
+    ajouter: {
+      titre: "添加车辆",
+    },
+    liste: {
+      titre: "车辆",
+      description: "司机创建资料时可选择的车型。",
+      ajouterVehicule: "添加车辆",
+      aucunVehicule: "暂无车辆。",
+      places: (n: number) => `${n} 座`,
+      consulter: "查看",
+      modifier: "编辑",
+    },
+    detail: {
+      modifier: "编辑",
+    },
+    modifierPage: {
+      retourFiche: "← 返回详情",
+      titre: "编辑车辆",
+    },
+    form: {
+      categorie: "类别",
+      selectionnerCategorie: "选择类别",
+      nombrePlaces: "座位数",
+      marque: "品牌",
+      modele: "型号",
+      photo: "照片",
+      photoConserverActuelle: "（留空以保留当前照片）",
+      enregistrement: "保存中...",
+      ajout: "添加中...",
+      enregistrerModifications: "保存修改",
+      ajouterVehicule: "添加车辆",
+      erreurGenerique: "发生错误",
+    },
+    deleteButton: {
+      confirm: "确定要删除此车辆吗？",
+      supprimer: "删除",
+      suppression: "删除中...",
+    },
+  },
+};

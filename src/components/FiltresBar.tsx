@@ -4,9 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LANGUE_OPTIONS } from "@/lib/langues";
 import type { ProfilFiltres } from "@/lib/profilFilters";
+import { useLanguage } from "@/lib/i18n/context";
 
 export default function FiltresBar({ filtres }: { filtres: ProfilFiltres }) {
   const router = useRouter();
+  const { dict } = useLanguage();
+  const t = dict.filtresBar;
   const [langue, setLangue] = useState(filtres.langue ?? "");
   const [ville, setVille] = useState(filtres.ville ?? "");
   const [modele, setModele] = useState(filtres.modele ?? "");
@@ -41,35 +44,35 @@ export default function FiltresBar({ filtres }: { filtres: ProfilFiltres }) {
       style={{ borderColor: "var(--color-divider)" }}
     >
       <div className="flex items-baseline justify-between">
-        <h6 style={{ color: "var(--color-neutral-700)" }}>Filtres</h6>
+        <h6 style={{ color: "var(--color-neutral-700)" }}>{t.titre}</h6>
         {hasFiltres && (
           <button type="button" onClick={handleReset} className="text-[11.5px]" style={{ color: "var(--color-accent)" }}>
-            Tout effacer
+            {t.toutEffacer}
           </button>
         )}
       </div>
 
       <div className="field">
-        <label htmlFor="filtre-ville">Ville ou aéroport</label>
+        <label htmlFor="filtre-ville">{t.labelVille}</label>
         <input
           id="filtre-ville"
           type="text"
           value={ville}
           onChange={(e) => setVille(e.target.value)}
-          placeholder="Paris, Orly…"
+          placeholder={t.placeholderVille}
           className="input"
         />
       </div>
 
       <div className="field">
-        <label htmlFor="filtre-langue">Langue</label>
+        <label htmlFor="filtre-langue">{t.labelLangue}</label>
         <select
           id="filtre-langue"
           value={langue}
           onChange={(e) => setLangue(e.target.value)}
           className="input"
         >
-          <option value="">Toutes</option>
+          <option value="">{t.toutesLangues}</option>
           {LANGUE_OPTIONS.map((o) => (
             <option key={o.code} value={o.code}>
               {o.drapeau} {o.label}
@@ -79,26 +82,26 @@ export default function FiltresBar({ filtres }: { filtres: ProfilFiltres }) {
       </div>
 
       <div className="field">
-        <label htmlFor="filtre-modele">Modèle du véhicule</label>
+        <label htmlFor="filtre-modele">{t.labelModele}</label>
         <input
           id="filtre-modele"
           type="text"
           value={modele}
           onChange={(e) => setModele(e.target.value)}
-          placeholder="Classe E…"
+          placeholder={t.placeholderModele}
           className="input"
         />
       </div>
 
       <div className="field">
-        <label htmlFor="filtre-places">Places (min.)</label>
+        <label htmlFor="filtre-places">{t.labelPlaces}</label>
         <input
           id="filtre-places"
           type="number"
           min={1}
           value={places}
           onChange={(e) => setPlaces(e.target.value)}
-          placeholder="4"
+          placeholder={t.placeholderPlaces}
           className="input"
         />
       </div>
@@ -108,7 +111,7 @@ export default function FiltresBar({ filtres }: { filtres: ProfilFiltres }) {
         <i className="corner tr" />
         <i className="corner bl" />
         <i className="corner br" />
-        Appliquer
+        {t.appliquer}
       </button>
     </form>
   );

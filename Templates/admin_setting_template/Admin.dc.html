@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&family=Barlow+Condensed:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#e7e7ea;font-family:Barlow,system-ui,sans-serif;color:#1d1f20;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#597ea3;text-decoration:none}a:hover{color:#416180}
+button{font:inherit;color:inherit}
+input{font:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;padding:clamp(12px,3vw,32px);display:flex">
+<div style="flex:1;display:grid;grid-template-columns:auto clamp(200px,20vw,248px) minmax(0,1fr);background:#ffffff;border-radius:22px;overflow:hidden;box-shadow:0 1px 2px rgba(29,31,32,.04),0 20px 60px -30px rgba(29,31,32,.25);min-height:calc(100vh - 64px)">
+
+<sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+<div style="width:76px;border-right:1px solid #efeff1;display:flex;flex-direction:column;align-items:center;padding:22px 0;gap:14px">
+  <div style="width:46px;height:46px;border-radius:14px;border:2px solid #d6ebff;background:#eef6ff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px #f5f9ff">
+    <span style="width:14px;height:14px;border:1.5px solid #597ea3;display:block"></span>
+  </div>
+  <div style="width:24px;height:1px;background:#efeff1;margin:6px 0"></div>
+  <a href="#" title="Annuaire public" style="width:44px;height:44px;border-radius:12px;border:1px solid #e7e7ea;display:flex;align-items:center;justify-content:center;color:#5d5d60" style-hover="background:#f5f5f8">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10"></path></svg>
+  </a>
+  <a href="#" title="Mon profil" style="width:44px;height:44px;border-radius:12px;border:1px solid #e7e7ea;display:flex;align-items:center;justify-content:center;color:#5d5d60" style-hover="background:#f5f5f8">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M16 7a4 4 0 1 1-8 0a4 4 0 1 1 8 0"></path></svg>
+  </a>
+  <div style="flex:1"></div>
+  <button title="Déconnexion" style="width:44px;height:44px;border-radius:12px;border:1px solid #e7e7ea;background:#fff;display:flex;align-items:center;justify-content:center;color:#5d5d60;cursor:pointer" style-hover="background:#f5f5f8">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9"></path></svg>
+  </button>
+</div>
+</sc-if>
+
+<aside style="border-right:1px solid #efeff1;display:flex;flex-direction:column;min-width:0">
+  <div style="height:98px;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid #efeff1">
+    <div style="width:42px;height:42px;border-radius:50%;background:#2c455d;color:#eef6ff;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-weight:600;font-size:16px;letter-spacing:.04em;flex-shrink:0">AD</div>
+    <div style="min-width:0;flex:1">
+      <div style="font-size:16px;font-weight:500;line-height:1.2">Administrateur</div>
+      <div style="font-size:13px;color:#5d5d60;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">admin@miseenrelation.fr</div>
+    </div>
+  </div>
+  <nav style="padding:22px 14px;display:flex;flex-direction:column;gap:26px;flex:1">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7a7a7d;padding:0 12px 8px">Modération</div>
+      <sc-for list="{{ navModeration }}" as="n" hint-placeholder-count="2">
+        <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border:none;border-radius:10px;background:{{ n.bg }};color:{{ n.fg }};font-size:15.5px;font-weight:{{ n.weight }};cursor:pointer;text-align:left" style-hover="background:#f5f5f8">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="{{ n.icon }}"></path></svg>
+          <span style="flex:1">{{ n.label }}</span>
+          <sc-if value="{{ n.hasCount }}" hint-placeholder-val="{{ false }}">
+            <span style="min-width:22px;height:22px;padding:0 7px;border-radius:11px;background:#597ea3;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ n.count }}</span>
+          </sc-if>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7a7a7d;padding:0 12px 8px">Catalogue</div>
+      <sc-for list="{{ navCatalogue }}" as="n" hint-placeholder-count="4">
+        <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border:none;border-radius:10px;background:{{ n.bg }};color:{{ n.fg }};font-size:15.5px;font-weight:{{ n.weight }};cursor:pointer;text-align:left" style-hover="background:#f5f5f8">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="{{ n.icon }}"></path></svg>
+          <span style="flex:1">{{ n.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#7a7a7d;padding:0 12px 8px">Système</div>
+      <sc-for list="{{ navSysteme }}" as="n" hint-placeholder-count="1">
+        <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border:none;border-radius:10px;background:{{ n.bg }};color:{{ n.fg }};font-size:15.5px;font-weight:{{ n.weight }};cursor:pointer;text-align:left" style-hover="background:#f5f5f8">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="{{ n.icon }}"></path></svg>
+          <span style="flex:1">{{ n.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+  </nav>
+  <div style="padding:18px 20px 22px">
+    <a href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;height:42px;border-radius:10px;background:#597ea3;color:#fff;font-size:14px;font-weight:500" style-hover="background:#416180;color:#fff">
+      Voir l'annuaire
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" style="stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M7 17 17 7 M7 7h10v10"></path></svg>
+    </a>
+  </div>
+</aside>
+
+<main style="display:flex;flex-direction:column;min-width:0">
+  <header style="height:98px;display:flex;align-items:center;gap:16px;padding:0 28px;border-bottom:1px solid #efeff1">
+    <label style="flex:0 1 420px;height:44px;display:flex;align-items:center;gap:10px;padding:0 14px;background:#f5f5f8;border-radius:12px;color:#7a7a7d">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" style="stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z M21 21l-4.3-4.3"></path></svg>
+      <input value="{{ query }}" onChange="{{ onQuery }}" placeholder="Rechercher un chauffeur, un véhicule…" style="flex:1;min-width:0;border:none;background:transparent;outline:none;font-size:14.5px;color:#1d1f20"></input>
+      <span style="font-size:12px;color:#98989b">⌘K</span>
+    </label>
+    <div style="flex:1"></div>
+    <button onClick="{{ goDemandes }}" title="Demandes en attente" style="position:relative;width:44px;height:44px;border-radius:50%;border:none;background:#f5f5f8;display:flex;align-items:center;justify-content:center;color:#424244;cursor:pointer">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" style="stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9 M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+      <sc-if value="{{ hasPending }}" hint-placeholder-val="{{ true }}">
+        <span style="position:absolute;top:4px;right:4px;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#c2463d;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid #fff">{{ pendingTotal }}</span>
+      </sc-if>
+    </button>
+    <div style="width:44px;height:44px;border-radius:50%;background:#2c455d;color:#eef6ff;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-weight:600;font-size:15px">AD</div>
+  </header>
+
+  <div style="flex:1;padding:30px 28px 40px;overflow:auto">
+    <div style="display:flex;align-items:center;gap:10px;padding-bottom:26px;border-bottom:1px solid #efeff1">
+      <h1 style="margin:0;font-family:'Barlow Condensed';font-weight:600;font-size:30px;letter-spacing:-.01em;line-height:1">Administration</h1>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#7a7a7d" style="stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg>
+      <span style="font-size:17px;color:#5d5d60">{{ sectionLabel }}</span>
+    </div>
+
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:28px 0 18px;border-bottom:1px solid #efeff1">
+      <div>
+        <h2 style="margin:0;font-family:'Barlow Condensed';font-weight:600;font-size:24px;line-height:1.1">{{ sectionTitle }}</h2>
+        <p style="margin:6px 0 0;font-size:14.5px;color:#5d5d60;text-wrap:pretty">{{ sectionDesc }}</p>
+      </div>
+      <sc-if value="{{ hasAdd }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ onAdd }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 16px;border:none;border-radius:10px;background:#597ea3;color:#fff;font-size:14px;font-weight:500;cursor:pointer" style-hover="background:#416180">
+          {{ addLabel }}
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" style="stroke-width:1.8;stroke-linecap:round"><path d="M12 5v14 M5 12h14"></path></svg>
+        </button>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ isDemandes }}" hint-placeholder-val="{{ true }}">
+      <sc-for list="{{ demandes }}" as="d" hint-placeholder-count="4">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px;padding:18px 0;border-bottom:1px solid #f2f2f4;opacity:{{ d.opacity }}">
+          <div style="flex:1 1 240px;min-width:0;display:flex;align-items:center;gap:14px">
+            <div style="width:44px;height:44px;flex-shrink:0;border-radius:50%;background:#eef6ff;color:#416180;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-weight:600;font-size:16px">{{ d.initials }}</div>
+            <div style="min-width:0">
+              <div style="font-size:16px;font-weight:500">{{ d.prenom }} {{ d.nom }}</div>
+              <div style="font-size:14px;color:#5d5d60;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.email }}</div>
+            </div>
+          </div>
+          <div style="flex:1 1 170px;min-width:0;font-size:14px;color:#5d5d60;line-height:1.5">
+            <div style="white-space:nowrap">{{ d.telephone }}</div>
+            <div>{{ d.ville }} {{ d.codePostal }} · {{ d.date }}</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onClick="{{ d.reject }}" style="height:38px;padding:0 14px;border-radius:10px;border:1px solid #e7e7ea;background:#fff;font-size:14px;font-weight:500;color:#9b3a33;cursor:pointer" style-hover="background:#fbf1f0;border-color:#efd3d0">{{ d.rejectLabel }}</button>
+            <button onClick="{{ d.approve }}" style="height:38px;padding:0 14px;border-radius:10px;border:none;background:#597ea3;color:#fff;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="background:#416180">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" style="stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M20 6 9 17l-5-5"></path></svg>
+              {{ d.approveLabel }}
+            </button>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isModifs }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ modifs }}" as="m" hint-placeholder-count="3">
+        <div style="display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid #f2f2f4">
+          <div style="width:44px;height:44px;border-radius:50%;background:#eef6ff;color:#416180;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed';font-weight:600;font-size:16px">{{ m.initials }}</div>
+          <div style="min-width:0">
+            <div style="font-size:16px;font-weight:500">{{ m.prenom }} {{ m.nom }}</div>
+            <div style="font-size:14px;color:#5d5d60">{{ m.email }}</div>
+          </div>
+          <div style="font-size:14px;color:#5d5d60">{{ m.date }}</div>
+          <button style="height:38px;padding:0 16px;border-radius:10px;border:none;background:#f5f5f8;font-size:14px;font-weight:500;color:#2c455d;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="background:#e7e7ea">
+            Examiner
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" style="stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isVehicules }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ vehicules }}" as="v" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:18px;padding:16px 0;border-bottom:1px solid #f2f2f4">
+          <div style="width:64px;height:64px;border-radius:12px;background-color:#eef6ff;background-image:repeating-linear-gradient(135deg,rgba(89,128,166,.25) 0 1.5px,transparent 1.5px 7px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,monospace;font-size:9px;color:#416180">photo</div>
+          <div style="min-width:0">
+            <div style="font-size:16px;font-weight:500">{{ v.marque }} {{ v.modele }}</div>
+            <div style="font-size:14px;color:#5d5d60">{{ v.categorie }} · {{ v.places }} places</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button style="height:38px;padding:0 14px;border-radius:10px;border:1px solid #e7e7ea;background:#fff;font-size:14px;font-weight:500;cursor:pointer" style-hover="background:#f5f5f8">Consulter</button>
+            <button style="height:38px;padding:0 14px;border-radius:10px;border:none;background:#f5f5f8;font-size:14px;font-weight:500;color:#2c455d;cursor:pointer" style-hover="background:#e7e7ea">Modifier</button>
+            <button onClick="{{ v.remove }}" title="Supprimer" style="width:38px;height:38px;border-radius:10px;border:1px solid #e7e7ea;background:#fff;color:#9b3a33;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#fbf1f0">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" style="stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isCatalogue }}" hint-placeholder-val="{{ false }}">
+      <sc-for list="{{ catalogue }}" as="c" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:18px;padding:16px 0;border-bottom:1px solid #f2f2f4">
+          <div style="font-size:16px;font-weight:500">{{ c.nom }}</div>
+          <div style="font-size:14px;color:#5d5d60">{{ c.usage }}</div>
+          <div style="display:flex;gap:8px">
+            <button style="height:36px;padding:0 14px;border-radius:10px;border:none;background:#f5f5f8;font-size:14px;font-weight:500;color:#2c455d;cursor:pointer" style-hover="background:#e7e7ea">Modifier</button>
+            <button onClick="{{ c.remove }}" title="Supprimer" style="width:36px;height:36px;border-radius:10px;border:1px solid #e7e7ea;background:#fff;color:#9b3a33;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#fbf1f0">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" style="stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            </button>
+          </div>
+        </div>
+      </sc-for>
+    </sc-if>
+
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:64px 0;text-align:center;color:#5d5d60;font-size:15px">{{ emptyText }}</div>
+    </sc-if>
+
+    <sc-if value="{{ isReglages }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:860px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 0;border-bottom:1px solid #f2f2f4">
+          <div>
+            <div style="font-size:16px;font-weight:500">Nombre de cartes par page</div>
+            <div style="font-size:14px;color:#5d5d60;margin-top:3px">Nombre de profils affichés par page dans l'annuaire public (1 à 100).</div>
+          </div>
+          <div style="display:flex;align-items:center;height:42px;border-radius:10px;background:#f5f5f8;flex-shrink:0">
+            <button onClick="{{ decCards }}" style="width:40px;height:42px;border:none;background:transparent;cursor:pointer;font-size:18px;color:#424244">−</button>
+            <input value="{{ cards }}" onChange="{{ onCards }}" style="width:48px;border:none;background:transparent;text-align:center;font-size:15px;font-weight:500;outline:none"></input>
+            <button onClick="{{ incCards }}" style="width:40px;height:42px;border:none;background:transparent;cursor:pointer;font-size:18px;color:#424244">+</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 0;border-bottom:1px solid #f2f2f4">
+          <div>
+            <div style="font-size:16px;font-weight:500">Thème de l'interface</div>
+            <div style="font-size:14px;color:#5d5d60;margin-top:3px">Palette appliquée à l'annuaire et à l'espace d'administration.</div>
+          </div>
+          <div style="display:flex;gap:4px;padding:4px;border-radius:10px;background:#f5f5f8;flex-shrink:0">
+            <sc-for list="{{ themes }}" as="t" hint-placeholder-count="3">
+              <button onClick="{{ t.pick }}" style="height:34px;padding:0 14px;border:none;border-radius:7px;background:{{ t.bg }};box-shadow:{{ t.shadow }};font-size:14px;font-weight:500;color:#1d1f20;cursor:pointer;display:flex;align-items:center;gap:8px">
+                <span style="width:10px;height:10px;border-radius:50%;background:{{ t.swatch }}"></span>{{ t.label }}
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 0;border-bottom:1px solid #f2f2f4">
+          <div>
+            <div style="font-size:16px;font-weight:500">Validation manuelle des modifications</div>
+            <div style="font-size:14px;color:#5d5d60;margin-top:3px">Les changements de profil des chauffeurs restent en attente jusqu'à votre validation.</div>
+          </div>
+          <button onClick="{{ toggleValidation }}" style="width:44px;height:24px;border-radius:12px;border:none;background:{{ validationBg }};position:relative;cursor:pointer;flex-shrink:0;transition:background .2s">
+            <span style="position:absolute;top:3px;left:{{ validationKnob }};width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s"></span>
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;padding-top:26px">
+          <button onClick="{{ save }}" style="height:42px;padding:0 20px;border:none;border-radius:10px;background:#597ea3;color:#fff;font-size:14.5px;font-weight:500;cursor:pointer" style-hover="background:#416180">{{ saveLabel }}</button>
+          <sc-if value="{{ saved }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:14px;color:#3f7a4f">Réglages enregistrés !</span>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</main>
+</div>
+</div>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1d1f20;color:#f5f5f8;padding:12px 18px;border-radius:12px;font-size:14px;box-shadow:0 10px 30px -10px rgba(0,0,0,.4)">{{ toast }}</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRail&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;emptyStates&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const IC = {
+  inbox: "M22 12h-6l-2 3h-4l-2-3H2 M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",
+  edit: "M12 20h9 M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z",
+  car: "M5 13.5 6.6 8.9A2 2 0 0 1 8.5 7.5h7a2 2 0 0 1 1.9 1.4L19 13.5 M4.5 13.5h15a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z M8.9 18.5a1.4 1.4 0 1 1-2.8 0a1.4 1.4 0 1 1 2.8 0 M17.9 18.5a1.4 1.4 0 1 1-2.8 0a1.4 1.4 0 1 1 2.8 0",
+  pin: "M12 21.5s-7-6.3-7-11.5a7 7 0 1 1 14 0c0 5.2-7 11.5-7 11.5z M14.5 10a2.5 2.5 0 1 1-5 0a2.5 2.5 0 1 1 5 0",
+  tag: "M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z M7.5 7.5h.01",
+  card: "M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z M2 10h20",
+  sliders: "M4 21v-7 M4 10V3 M12 21v-9 M12 8V3 M20 21v-5 M20 12V3 M1 14h6 M9 8h6 M17 16h6"
+};
+const SECTIONS = {
+  demandes: { label: "Demandes", title: "Demandes d'inscription en attente", desc: "Approuvez ou rejetez les nouveaux chauffeurs avant leur apparition dans l'annuaire.", empty: "Aucune demande en attente." },
+  modifications: { label: "Modifications", title: "Modifications de profil en attente", desc: "Changements soumis par les chauffeurs, à examiner avant publication.", empty: "Aucune modification en attente." },
+  vehicules: { label: "Véhicules", title: "Véhicules enregistrés", desc: "Modèles proposés aux chauffeurs lors de la création de leur profil.", add: "Ajouter un véhicule", empty: "Aucun véhicule pour le moment." },
+  zones: { label: "Zones", title: "Zones desservies", desc: "Secteurs géographiques que les chauffeurs peuvent couvrir.", add: "Ajouter une zone", empty: "Aucune zone pour le moment." },
+  options: { label: "Options", title: "Options", desc: "Services complémentaires affichés sur les profils.", add: "Ajouter une option", empty: "Aucune option pour le moment." },
+  paiements: { label: "Modes de paiement", title: "Modes de paiement", desc: "Moyens de paiement acceptés par les chauffeurs.", add: "Ajouter un mode", empty: "Aucun mode de paiement pour le moment." },
+  reglages: { label: "Réglages", title: "Réglages", desc: "Paramètres généraux de l'annuaire." }
+};
+const THEMES = [
+  { id: "default", label: "Clair", swatch: "#5980a6" },
+  { id: "navy", label: "Navy", swatch: "#2f4a63" },
+  { id: "graphite", label: "Graphite", swatch: "#4a6660" }
+];
+class Component extends DCLogic {
+  state = {
+    section: "demandes", query: "", cards: 12, theme: "default", validation: true, saving: false, saved: false, toast: null, busy: {},
+    demandes: [
+      { id: "d1", prenom: "Karim", nom: "Benali", email: "karim.benali@gmail.com", telephone: "06 12 45 78 90", ville: "Lyon", codePostal: "69003", date: "il y a 2 h" },
+      { id: "d2", prenom: "Sophie", nom: "Marchand", email: "s.marchand@orange.fr", telephone: "07 81 22 36 14", ville: "Villeurbanne", codePostal: "69100", date: "hier" },
+      { id: "d3", prenom: "Thomas", nom: "Lefèvre", email: "thomas.lefevre@outlook.fr", telephone: "06 44 90 13 57", ville: "Bron", codePostal: "69500", date: "il y a 3 j" },
+      { id: "d4", prenom: "Aïcha", nom: "Diallo", email: "aicha.diallo@gmail.com", telephone: "07 55 63 21 08", ville: "Lyon", codePostal: "69007", date: "il y a 4 j" }
+    ],
+    modifs: [
+      { id: "m1", prenom: "Julien", nom: "Moreau", email: "julien.moreau@gmail.com", date: "Modifié il y a 40 min" },
+      { id: "m2", prenom: "Nadia", nom: "Haddad", email: "nadia.h@free.fr", date: "Modifié hier" }
+    ],
+    vehicules: [
+      { id: "v1", marque: "Mercedes", modele: "Classe E", categorie: "Berline", places: 4 },
+      { id: "v2", marque: "Mercedes", modele: "Classe V", categorie: "Van", places: 7 },
+      { id: "v3", marque: "Tesla", modele: "Model Y", categorie: "SUV", places: 4 },
+      { id: "v4", marque: "Toyota", modele: "Camry Hybride", categorie: "Berline", places: 4 }
+    ],
+    zones: [{ id: "z1", nom: "Lyon centre", n: 18 }, { id: "z2", nom: "Aéroport Saint-Exupéry", n: 12 }, { id: "z3", nom: "Gare Part-Dieu", n: 15 }, { id: "z4", nom: "Villeurbanne", n: 7 }],
+    options: [{ id: "o1", nom: "Siège enfant", n: 9 }, { id: "o2", nom: "Wi-Fi à bord", n: 14 }, { id: "o3", nom: "Eau offerte", n: 16 }, { id: "o4", nom: "Animaux acceptés", n: 5 }],
+    paiements: [{ id: "p1", nom: "Carte bancaire", n: 21 }, { id: "p2", nom: "Espèces", n: 17 }, { id: "p3", nom: "Virement", n: 6 }]
+  };
+  flash(msg) {
+    clearTimeout(this._t);
+    this.setState({ toast: msg });
+    this._t = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+  decide(d, action) {
+    this.setState(s => ({ busy: { ...s.busy, [d.id]: action } }));
+    setTimeout(() => {
+      this.setState(s => ({ demandes: s.demandes.filter(x => x.id !== d.id) }));
+      this.flash(`${d.prenom} ${d.nom} — demande ${action === "APPROVE" ? "approuvée" : "rejetée"}`);
+    }, 600);
+  }
+  removeFrom(key, item, name) {
+    this.setState(s => ({ [key]: s[key].filter(x => x.id !== item.id) }));
+    this.flash(`${name} supprimé(e)`);
+  }
+  renderVals() {
+    const s = this.state, forceEmpty = this.props.emptyStates ?? false;
+    const q = s.query.trim().toLowerCase();
+    const match = str => !q || str.toLowerCase().includes(q);
+    const go = id => () => this.setState({ section: id, saved: false });
+    const nav = (id, icon, count) => {
+      const on = s.section === id;
+      return { label: SECTIONS[id].label, icon, go: go(id), bg: on ? "#eef6ff" : "transparent", fg: on ? "#416180" : "#424244", weight: on ? 500 : 400, hasCount: !!count, count };
+    };
+    const list = arr => forceEmpty ? [] : arr;
+    const demandes = list(s.demandes).filter(d => match(`${d.prenom} ${d.nom} ${d.email} ${d.ville}`)).map(d => ({
+      ...d, initials: d.prenom[0] + d.nom[0], opacity: s.busy[d.id] ? 0.5 : 1,
+      approveLabel: s.busy[d.id] === "APPROVE" ? "…" : "Approuver", rejectLabel: s.busy[d.id] === "REJECT" ? "…" : "Rejeter",
+      approve: () => !s.busy[d.id] && this.decide(d, "APPROVE"), reject: () => !s.busy[d.id] && this.decide(d, "REJECT")
+    }));
+    const modifs = list(s.modifs).filter(m => match(`${m.prenom} ${m.nom} ${m.email}`)).map(m => ({ ...m, initials: m.prenom[0] + m.nom[0] }));
+    const vehicules = list(s.vehicules).filter(v => match(`${v.marque} ${v.modele} ${v.categorie}`)).map(v => ({ ...v, remove: () => this.removeFrom("vehicules", v, `${v.marque} ${v.modele}`) }));
+    const isCatalogue = ["zones", "options", "paiements"].includes(s.section);
+    const catalogue = isCatalogue ? list(s[s.section]).filter(c => match(c.nom)).map(c => ({ ...c, usage: `${c.n} chauffeur${c.n > 1 ? "s" : ""}`, remove: () => this.removeFrom(s.section, c, c.nom) })) : [];
+    const cur = { demandes, modifications: modifs, vehicules }[s.section] ?? (isCatalogue ? catalogue : null);
+    const sec = SECTIONS[s.section];
+    const pendingTotal = s.demandes.length + s.modifs.length;
+    const setCards = n => this.setState({ cards: Math.max(1, Math.min(100, n || 1)), saved: false });
+    return {
+      showRail: this.props.showRail ?? true,
+      navModeration: [nav("demandes", IC.inbox, s.demandes.length), nav("modifications", IC.edit, s.modifs.length)],
+      navCatalogue: [nav("vehicules", IC.car), nav("zones", IC.pin), nav("options", IC.tag), nav("paiements", IC.card)],
+      navSysteme: [nav("reglages", IC.sliders)],
+      query: s.query, onQuery: e => this.setState({ query: e.target.value }),
+      goDemandes: go("demandes"), hasPending: pendingTotal > 0, pendingTotal,
+      sectionLabel: sec.label, sectionTitle: sec.title, sectionDesc: sec.desc,
+      hasAdd: !!sec.add, addLabel: sec.add, onAdd: () => this.flash("Formulaire d'ajout — à venir"),
+      isDemandes: s.section === "demandes", isModifs: s.section === "modifications", isVehicules: s.section === "vehicules", isCatalogue, isReglages: s.section === "reglages",
+      demandes, modifs, vehicules, catalogue,
+      isEmpty: !!cur && cur.length === 0, emptyText: q ? `Aucun résultat pour « ${s.query} ».` : sec.empty,
+      cards: s.cards, onCards: e => setCards(parseInt(e.target.value, 10)), incCards: () => setCards(s.cards + 1), decCards: () => setCards(s.cards - 1),
+      themes: THEMES.map(t => ({ ...t, bg: s.theme === t.id ? "#fff" : "transparent", shadow: s.theme === t.id ? "0 1px 3px rgba(29,31,32,.12)" : "none", pick: () => this.setState({ theme: t.id, saved: false }) })),
+      validationBg: s.validation ? "#597ea3" : "#d4d4d7", validationKnob: s.validation ? "23px" : "3px",
+      toggleValidation: () => this.setState({ validation: !s.validation, saved: false }),
+      saveLabel: s.saving ? "Enregistrement..." : "Enregistrer", saved: s.saved,
+      save: () => { this.setState({ saving: true }); setTimeout(() => this.setState({ saving: false, saved: true }), 700); },
+      hasToast: !!s.toast, toast: s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
