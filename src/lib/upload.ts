@@ -23,5 +23,8 @@ export async function saveUploadedPhoto(photo: File): Promise<string> {
   const buffer = Buffer.from(await photo.arrayBuffer());
   await writeFile(path.join(uploadsDir, filename), buffer);
 
-  return `/uploads/${filename}`;
+  // Served through /api/uploads/[filename] rather than the static /public path:
+  // `next start` only serves files present in /public at build time, so files
+  // written here at runtime would 404 otherwise.
+  return `/api/uploads/${filename}`;
 }
