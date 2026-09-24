@@ -6,6 +6,8 @@ export const connexion = {
     erreurIdentifiants: "Email ou mot de passe incorrect",
     connexionEnCours: "Connexion...",
     seConnecter: "Se connecter",
+    motDePasseOublie: "Mot de passe oublié ?",
+    motDePasseReinitialise: "Mot de passe modifié. Vous pouvez vous connecter.",
   },
   en: {
     titre: "Log in",
@@ -14,6 +16,8 @@ export const connexion = {
     erreurIdentifiants: "Incorrect email or password",
     connexionEnCours: "Logging in...",
     seConnecter: "Log in",
+    motDePasseOublie: "Forgot your password?",
+    motDePasseReinitialise: "Password changed. You can now log in.",
   },
   zh: {
     titre: "登录",
@@ -22,5 +26,7 @@ export const connexion = {
     erreurIdentifiants: "邮箱或密码不正确",
     connexionEnCours: "登录中...",
     seConnecter: "登录",
+    motDePasseOublie: "忘记密码？",
+    motDePasseReinitialise: "密码已修改，请登录。",
   },
 };

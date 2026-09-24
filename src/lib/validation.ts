@@ -53,6 +53,21 @@ export const motDePasseSchema = z
     path: ["confirmationMotDePasse"],
   });
 
+export const forgotPasswordSchema = z.object({
+  email: z.email("Email invalide"),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    token: z.string().min(20).max(200),
+    nouveauMotDePasse: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères").max(200),
+    confirmationMotDePasse: z.string(),
+  })
+  .refine((v) => v.nouveauMotDePasse === v.confirmationMotDePasse, {
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmationMotDePasse"],
+  });
+
 export const langueEntrySchema = z
   .object({
     code: z.enum(["ZH", "FR", "EN", "AUTRE"]),

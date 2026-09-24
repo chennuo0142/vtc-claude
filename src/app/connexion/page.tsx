@@ -1,10 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useLanguage } from "@/lib/i18n/context";
 import PasswordInput from "@/components/PasswordInput";
+
+function ResetNotice() {
+  const { dict } = useLanguage();
+  const searchParams = useSearchParams();
+  if (searchParams.get("reset") !== "1") return null;
+  return (
+    <p
+      className="mb-4 border px-4 py-3 text-sm"
+      style={{ borderColor: "var(--color-accent)", color: "var(--color-accent-800)", background: "var(--color-accent-100)" }}
+    >
+      {dict.connexion.motDePasseReinitialise}
+    </p>
+  );
+}
 
 export default function ConnexionPage() {
   const router = useRouter();
@@ -40,6 +55,9 @@ export default function ConnexionPage() {
   return (
     <div className="mx-auto max-w-md px-6 py-12">
       <h1 className="mb-6 text-xl font-bold">{t.titre}</h1>
+      <Suspense>
+        <ResetNotice />
+      </Suspense>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <label className="flex flex-col gap-1 text-sm">
           <span className="font-medium">{t.email}</span>
@@ -60,6 +78,9 @@ export default function ConnexionPage() {
             className="w-full rounded-lg border border-black/10 bg-transparent px-3 py-2 outline-none focus:border-black/40 dark:border-white/10 dark:focus:border-white/40"
           />
         </label>
+        <Link href="/mot-de-passe-oublie" className="self-start text-sm underline">
+          {t.motDePasseOublie}
+        </Link>
 
         {error && <p className="text-sm text-red-600">{error}</p>}
 

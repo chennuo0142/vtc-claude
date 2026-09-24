@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { LANGUE_OPTIONS, type LangueCode, type LangueEntry } from "@/lib/langues";
 import { useLanguage } from "@/lib/i18n/context";
+import { CameraIcon } from "@/components/icons";
 
 type VehiculeOption = {
   id: string;
@@ -15,7 +16,7 @@ type CatalogueOption = {
   nom: string;
 };
 
-type Props = {
+export type MonProfilFormProps = {
   nom: string;
   prenom: string;
   photoUrl: string | null;
@@ -38,6 +39,29 @@ type Props = {
   modesPaiement: CatalogueOption[];
   selectedModePaiementIds: string[];
 };
+
+export type MonProfilSection =
+  | "identite"
+  | "coordonnees"
+  | "vehicule"
+  | "langues"
+  | "galerie"
+  | "zones"
+  | "options"
+  | "paiement"
+  | "motDePasse"
+  | "messages";
+
+const FORM_SECTIONS: MonProfilSection[] = [
+  "identite",
+  "coordonnees",
+  "vehicule",
+  "langues",
+  "galerie",
+  "zones",
+  "options",
+  "paiement",
+];
 
 const MAX_LANGUES = 3;
 const MAX_ZONES = 4;
@@ -75,11 +99,14 @@ export default function MonProfilForm({
   selectedOptionIds: initialSelectedOptionIds,
   modesPaiement,
   selectedModePaiementIds: initialSelectedModePaiementIds,
-}: Props) {
+  section,
+}: MonProfilFormProps & { section: MonProfilSection }) {
   const router = useRouter();
   const { dict } = useLanguage();
   const t = dict.monProfilForm;
   const common = dict.common;
+  const photoInputRef = useRef<HTMLInputElement>(null);
+  const carteBackgroundInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(photoUrl);
   const [carteBackgroundPreview, setCarteBackgroundPreview] = useState<string | null>(
     carteBackgroundUrl
@@ -211,8 +238,11 @@ export default function MonProfilForm({
     }
   }
 
+  const show = (key: MonProfilSection) => (section === key ? "" : "hidden");
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className={`flex flex-col gap-6 ${FORM_SECTIONS.includes(section) ? "" : "hidden"}`}>
+      <div className={show("identite")}>
       <div className="blueprint relative flex flex-col gap-4 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.identite.titre}</h6>
@@ -229,7 +259,13 @@ export default function MonProfilForm({
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="blueprint relative h-20 w-20 shrink-0 overflow-hidden">
+          <button
+            type="button"
+            onClick={() => photoInputRef.current?.click()}
+            aria-label={t.identite.photoLabel}
+            title={t.identite.photoLabel}
+            className="blueprint group relative h-20 w-20 shrink-0 cursor-pointer overflow-hidden p-0"
+          >
             <Corners />
             {preview ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -237,23 +273,38 @@ export default function MonProfilForm({
             ) : (
               <div className="hatch h-full w-full" />
             )}
-          </div>
-          <div className="field m-0">
-            <label htmlFor="mp-photo">{t.identite.photoLabel}</label>
-            <input
-              id="mp-photo"
-              type="file"
-              name="photo"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={handlePhotoChange}
-              className="text-sm"
-            />
-          </div>
+            <span
+              className={`absolute inset-0 flex items-center justify-center transition ${
+                preview ? "bg-black/0 text-white opacity-0 group-hover:bg-black/40 group-hover:opacity-100" : ""
+              }`}
+              style={preview ? undefined : { color: "var(--color-accent-700)" }}
+            >
+              <CameraIcon className="h-7 w-7" />
+            </span>
+          </button>
+          <span className="text-sm" style={{ color: "var(--color-neutral-800)" }}>
+            {t.identite.photoLabel}
+          </span>
+          <input
+            ref={photoInputRef}
+            id="mp-photo"
+            type="file"
+            name="photo"
+            accept="image/png,image/jpeg,image/webp"
+            onChange={handlePhotoChange}
+            className="hidden"
+          />
         </div>
 
         <div className="field">
           <label>{t.identite.carteBackgroundLabel}</label>
-          <div className="blueprint relative aspect-video w-full overflow-hidden">
+          <button
+            type="button"
+            onClick={() => carteBackgroundInputRef.current?.click()}
+            aria-label={t.identite.carteBackgroundLabel}
+            title={t.identite.carteBackgroundLabel}
+            className="blueprint group relative aspect-video w-full cursor-pointer overflow-hidden p-0"
+          >
             <Corners />
             {carteBackgroundPreview ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -261,26 +312,35 @@ export default function MonProfilForm({
             ) : (
               <div className="hatch h-full w-full" />
             )}
-          </div>
-          <div className="mt-2 flex items-center gap-3">
-            <input
-              type="file"
-              name="carteBackground"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={handleCarteBackgroundChange}
-              className="text-sm"
-            />
-            {carteBackgroundPreview && (
-              <button
-                type="button"
-                onClick={handleCarteBackgroundRemove}
-                className="text-xs uppercase tracking-[0.08em]"
-                style={{ color: "#b3261e" }}
-              >
-                {t.retirer}
-              </button>
-            )}
-          </div>
+            <span
+              className={`absolute inset-0 flex items-center justify-center transition ${
+                carteBackgroundPreview
+                  ? "bg-black/0 text-white opacity-0 group-hover:bg-black/40 group-hover:opacity-100"
+                  : ""
+              }`}
+              style={carteBackgroundPreview ? undefined : { color: "var(--color-accent-700)" }}
+            >
+              <CameraIcon className="h-10 w-10" />
+            </span>
+          </button>
+          {carteBackgroundPreview && (
+            <button
+              type="button"
+              onClick={handleCarteBackgroundRemove}
+              className="mt-2 self-start text-xs uppercase tracking-[0.08em]"
+              style={{ color: "#b3261e" }}
+            >
+              {t.retirer}
+            </button>
+          )}
+          <input
+            ref={carteBackgroundInputRef}
+            type="file"
+            name="carteBackground"
+            accept="image/png,image/jpeg,image/webp"
+            onChange={handleCarteBackgroundChange}
+            className="hidden"
+          />
           <input
             type="hidden"
             name="carteBackground_remove"
@@ -293,7 +353,9 @@ export default function MonProfilForm({
           <textarea id="mp-bio" name="bio" defaultValue={bio ?? ""} rows={5} className="input" />
         </div>
       </div>
+      </div>
 
+      <div className={show("coordonnees")}>
       <div className="blueprint relative flex flex-col gap-4 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.coordonnees.titre}</h6>
@@ -323,6 +385,13 @@ export default function MonProfilForm({
             <input id="mp-codePostal" name="codePostal" defaultValue={codePostal} className="input" />
           </div>
         </div>
+      </div>
+      </div>
+
+      <div className={show("vehicule")}>
+      <div className="blueprint relative flex flex-col gap-4 p-5" style={{ background: "var(--color-surface)" }}>
+        <Corners />
+        <h6 style={{ color: "var(--color-neutral-700)" }}>{t.vehicule.titre}</h6>
 
         <div className="field">
           <label htmlFor="mp-vehicule">{t.coordonnees.vehicule}</label>
@@ -363,7 +432,9 @@ export default function MonProfilForm({
           </div>
         </div>
       </div>
+      </div>
 
+      <div className={show("zones")}>
       <div className="blueprint relative flex flex-col gap-3 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.zones.titre}</h6>
@@ -390,7 +461,9 @@ export default function MonProfilForm({
         </div>
         <input type="hidden" name="zoneIds" value={JSON.stringify(selectedZoneIds)} />
       </div>
+      </div>
 
+      <div className={show("options")}>
       <div className="blueprint relative flex flex-col gap-3 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.optionsVehicule.titre}</h6>
@@ -411,7 +484,9 @@ export default function MonProfilForm({
         </div>
         <input type="hidden" name="optionIds" value={JSON.stringify(selectedOptionIds)} />
       </div>
+      </div>
 
+      <div className={show("paiement")}>
       <div className="blueprint relative flex flex-col gap-3 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.modesPaiement.titre}</h6>
@@ -436,7 +511,9 @@ export default function MonProfilForm({
         </div>
         <input type="hidden" name="modePaiementIds" value={JSON.stringify(selectedModePaiementIds)} />
       </div>
+      </div>
 
+      <div className={show("langues")}>
       <div className="blueprint relative flex flex-col gap-3 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.langues.titre}</h6>
@@ -495,7 +572,9 @@ export default function MonProfilForm({
         </div>
         <input type="hidden" name="langues" value={JSON.stringify(selectedLangues)} />
       </div>
+      </div>
 
+      <div className={show("galerie")}>
       <div className="blueprint relative flex flex-col gap-3 p-5" style={{ background: "var(--color-surface)" }}>
         <Corners />
         <h6 style={{ color: "var(--color-neutral-700)" }}>{t.galerie.titre}</h6>
@@ -556,6 +635,7 @@ export default function MonProfilForm({
             </div>
           ))}
         </div>
+      </div>
       </div>
 
       {error && (

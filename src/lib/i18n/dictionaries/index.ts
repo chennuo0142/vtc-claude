@@ -2,6 +2,7 @@ import { common } from "./common";
 import { nav } from "./nav";
 import { home } from "./home";
 import { connexion } from "./connexion";
+import { motDePasseOublie } from "./motDePasseOublie";
 import { inscription } from "./inscription";
 import { compteEnAttente } from "./compteEnAttente";
 import { filtresBar } from "./filtresBar";
@@ -28,6 +29,7 @@ const fr = {
   nav: nav.fr,
   home: home.fr,
   connexion: connexion.fr,
+  motDePasseOublie: motDePasseOublie.fr,
   inscription: inscription.fr,
   compteEnAttente: compteEnAttente.fr,
   filtresBar: filtresBar.fr,
@@ -55,6 +57,7 @@ const en = {
   nav: nav.en,
   home: home.en,
   connexion: connexion.en,
+  motDePasseOublie: motDePasseOublie.en,
   inscription: inscription.en,
   compteEnAttente: compteEnAttente.en,
   filtresBar: filtresBar.en,
@@ -82,6 +85,7 @@ const zh = {
   nav: nav.zh,
   home: home.zh,
   connexion: connexion.zh,
+  motDePasseOublie: motDePasseOublie.zh,
   inscription: inscription.zh,
   compteEnAttente: compteEnAttente.zh,
   filtresBar: filtresBar.zh,

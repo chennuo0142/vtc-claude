@@ -44,3 +44,6 @@ next-env.d.ts
 
 # user-uploaded runtime content
 /public/uploads
+
+# local secrets (SMTP credentials)
+/Assets/Configuration_SMTP_Gmail.txt

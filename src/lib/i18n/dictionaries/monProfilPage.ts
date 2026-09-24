@@ -1,5 +1,20 @@
 export const monProfilPage = {
   fr: {
+    nav: {
+      groupeProfil: "Profil",
+      groupeActivite: "Activité",
+      groupeCompte: "Compte",
+      identite: "Identité",
+      coordonnees: "Coordonnées",
+      vehicule: "Véhicule",
+      langues: "Langues",
+      galerie: "Galerie photo",
+      zones: "Zones",
+      options: "Options",
+      paiement: "Paiement",
+      motDePasse: "Mot de passe",
+      voirFiche: "Voir ma fiche publique",
+    },
     kicker: "Espace chauffeur",
     titre: "Mon profil",
     modificationsEnAttente:
@@ -8,6 +23,21 @@ export const monProfilPage = {
     aucunMessage: "Aucun message pour le moment.",
   },
   en: {
+    nav: {
+      groupeProfil: "Profile",
+      groupeActivite: "Activity",
+      groupeCompte: "Account",
+      identite: "Identity",
+      coordonnees: "Contact details",
+      vehicule: "Vehicle",
+      langues: "Languages",
+      galerie: "Photo gallery",
+      zones: "Areas",
+      options: "Options",
+      paiement: "Payment",
+      motDePasse: "Password",
+      voirFiche: "View my public profile",
+    },
     kicker: "Driver space",
     titre: "My profile",
     modificationsEnAttente:
@@ -16,6 +46,21 @@ export const monProfilPage = {
     aucunMessage: "No messages yet.",
   },
   zh: {
+    nav: {
+      groupeProfil: "资料",
+      groupeActivite: "服务",
+      groupeCompte: "账户",
+      identite: "身份",
+      coordonnees: "联系方式",
+      vehicule: "车辆",
+      langues: "语言",
+      galerie: "相册",
+      zones: "服务区域",
+      options: "选项",
+      paiement: "支付方式",
+      motDePasse: "密码",
+      voirFiche: "查看我的公开资料",
+    },
     kicker: "司机专区",
     titre: "我的资料",
     modificationsEnAttente:

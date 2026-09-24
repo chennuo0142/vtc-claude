@@ -18,17 +18,50 @@ export default async function ProfilPage({
 
   const user = await prisma.user.findFirst({
     where: { id, status: "APPROVED" },
-    include: { profile: { include: { vehicule: true } } },
+    include: {
+      profile: {
+        include: {
+          vehicule: true,
+          zones: { orderBy: { nom: "asc" } },
+          options: { orderBy: { nom: "asc" } },
+          modesPaiement: { orderBy: { nom: "asc" } },
+        },
+      },
+    },
   });
 
   if (!user || !user.profile) {
     notFound();
   }
 
-  const { nom, prenom, photoUrl, bio, galerie, telephone, emailContact, langues, ville, vehicule } =
+  const { nom, prenom, photoUrl, bio, galerie, telephone, emailContact, langues, ville, vehicule, nombrePlaces, annee, zones, options, modesPaiement } =
     user.profile;
   const photosGalerie = galerie.filter(Boolean);
   const languesParlees = parseLangues(langues);
+  const specs: { label: string; value: string }[] = [];
+  if (languesParlees.length > 0) {
+    specs.push({
+      label: t.langues,
+      value: languesParlees
+        .map((entry) => {
+          const { drapeau, libelle } = formatLangue(entry);
+          return `${drapeau} ${libelle}`;
+        })
+        .join(" · "),
+    });
+  }
+  if (vehicule) {
+    specs.push({
+      label: t.vehicule,
+      value: `${vehicule.marque} ${vehicule.modele}${annee ? ` — ${annee}` : ""}`,
+    });
+  }
+  if (nombrePlaces != null) specs.push({ label: t.places, value: String(nombrePlaces) });
+  if (zones.length > 0) specs.push({ label: t.zones, value: zones.map((z) => z.nom).join(" · ") });
+  if (modesPaiement.length > 0) {
+    specs.push({ label: t.paiement, value: modesPaiement.map((m) => m.nom).join(", ") });
+  }
+  if (options.length > 0) specs.push({ label: t.options, value: options.map((o) => o.nom).join(", ") });
   const initiales = `${prenom.charAt(0)}${nom.charAt(0)}`;
 
   return (
@@ -124,6 +157,13 @@ export default async function ProfilPage({
                   <PinIcon className="h-[15px] w-[15px]" style={{ color: "var(--color-accent-700)" } as React.CSSProperties} />
                   {ville}
                 </span>
+                {vehicule && (
+                  <span className="inline-flex items-center gap-1.5">
+                    <CarIcon className="h-[15px] w-[15px]" style={{ color: "var(--color-accent-700)" } as React.CSSProperties} />
+                    {vehicule.marque} {vehicule.modele}
+                    {nombrePlaces != null ? ` · ${t.placesCount(nombrePlaces)}` : ""}
+                  </span>
+                )}
               </div>
             )}
             {languesParlees.length > 0 && (
@@ -151,20 +191,37 @@ export default async function ProfilPage({
             </p>
           )}
 
-          {vehicule && (
-            <div className="flex items-center gap-3 text-[13px]" style={{ color: "var(--color-neutral-800)" }}>
-              {vehicule.photoUrl ? (
-                <div className="blueprint relative h-12 w-16 shrink-0 overflow-hidden">
-                  <i className="corner tl" />
-                  <i className="corner tr" />
-                  <i className="corner bl" />
-                  <i className="corner br" />
-                  <Image src={vehicule.photoUrl} alt="" fill className="object-cover" />
-                </div>
-              ) : (
-                <CarIcon className="h-[15px] w-[15px]" style={{ color: "var(--color-accent-700)" } as React.CSSProperties} />
-              )}
-              {vehicule.marque} {vehicule.modele}
+          {specs.length > 0 && (
+            <div className="blueprint relative">
+              <i className="corner tl" />
+              <i className="corner tr" />
+              <i className="corner bl" />
+              <i className="corner br" />
+              <dl
+                className="m-0 grid grid-cols-1 gap-px sm:grid-cols-2"
+                style={{ background: "var(--color-divider)" }}
+              >
+                {specs.map((spec) => (
+                  <div
+                    key={spec.label}
+                    className="flex items-baseline gap-2.5 px-4 py-3"
+                    style={{ background: "var(--color-bg)" }}
+                  >
+                    <dt
+                      className="text-[10px] font-semibold uppercase tracking-[0.14em]"
+                      style={{ fontFamily: "var(--font-heading)", color: "var(--color-neutral-700)" }}
+                    >
+                      {spec.label}
+                    </dt>
+                    <span
+                      aria-hidden="true"
+                      className="flex-1 -translate-y-[3px] border-b border-dotted"
+                      style={{ borderColor: "var(--color-neutral-400)" }}
+                    />
+                    <dd className="m-0 min-w-0 text-right text-[13.5px] font-medium">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
           )}
         </div>

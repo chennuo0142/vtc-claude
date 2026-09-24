@@ -23,6 +23,9 @@ export const monProfilForm = {
       nombrePlaces: "Nombre de places",
       annee: "Année du véhicule",
     },
+    vehicule: {
+      titre: "Véhicule",
+    },
     zones: {
       titre: "Zones de travail (4 maximum)",
     },
@@ -68,6 +71,9 @@ export const monProfilForm = {
       nombrePlaces: "Number of seats",
       annee: "Vehicle year",
     },
+    vehicule: {
+      titre: "Vehicle",
+    },
     zones: {
       titre: "Work areas (4 maximum)",
     },
@@ -112,6 +118,9 @@ export const monProfilForm = {
       aucunVehicule: "无车辆",
       nombrePlaces: "座位数",
       annee: "车辆年份",
+    },
+    vehicule: {
+      titre: "车辆",
     },
     zones: {
       titre: "工作区域（最多4个）",

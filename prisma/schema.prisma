@@ -39,6 +39,32 @@ model User {
   updatedAt       DateTime      @updatedAt
 
   profile Profile?
+  passwordResetTokens PasswordResetToken[]
+}
+
+// Jeton de réinitialisation de mot de passe. Seul le hash SHA-256 est stocké :
+// le jeton en clair n'existe que dans l'email envoyé à l'utilisateur.
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Compteur générique pour la limitation de débit (fenêtre glissante).
+model RateLimitHit {
+  id        String   @id @default(cuid())
+  key       String
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
 }
 
 model Profile {
