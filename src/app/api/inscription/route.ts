@@ -5,6 +5,10 @@ import { inscriptionSchema } from "@/lib/validation";
 import { getLocale } from "@/lib/i18n/dictionary";
 import { sendEmailVerificationEmail } from "@/lib/mail";
 import { buildVerificationUrl, issueVerificationToken } from "@/lib/emailVerification";
+import { getClientIp, rateLimit } from "@/lib/rateLimit";
+import { verifyTurnstile } from "@/lib/turnstile";
+
+const HOUR = 60 * 60 * 1000;
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -17,7 +21,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const { nom, prenom, email, telephone, ville, codePostal, password } = parsed.data;
+  const { nom, prenom, email, telephone, ville, codePostal, password, turnstileToken } = parsed.data;
+
+  const ip = getClientIp(request);
+  if (!(await rateLimit(`inscription:ip:${ip}`, 5, HOUR))) {
+    return NextResponse.json({ error: "Trop de demandes, réessayez plus tard" }, { status: 429 });
+  }
+
+  if (!(await verifyTurnstile(turnstileToken, ip))) {
+    return NextResponse.json({ error: "Vérification anti-robot échouée", code: "antibot" }, { status: 400 });
+  }
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {

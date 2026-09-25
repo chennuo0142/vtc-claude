@@ -15,6 +15,7 @@ export const inscription = {
     champMotDePasse: "Mot de passe",
     envoiEnCours: "Envoi...",
     envoyerLaDemande: "Envoyer la demande",
+    trop: "Trop de demandes, réessayez plus tard.",
   },
   en: {
     kickerEnvoyee: "Request sent",
@@ -32,6 +33,7 @@ export const inscription = {
     champMotDePasse: "Password",
     envoiEnCours: "Sending...",
     envoyerLaDemande: "Send the request",
+    trop: "Too many requests, please try again later.",
   },
   zh: {
     kickerEnvoyee: "申请已发送",
@@ -49,5 +51,6 @@ export const inscription = {
     champMotDePasse: "密码",
     envoiEnCours: "发送中...",
     envoyerLaDemande: "发送申请",
+    trop: "请求过多，请稍后再试。",
   },
 };

@@ -14,6 +14,7 @@ export const inscriptionSchema = z.object({
     .trim()
     .regex(/^[0-9]{4,10}$/, "Code postal invalide"),
   password: z.string().min(8, "Le mot de passe doit contenir au moins 8 caractères"),
+  turnstileToken: z.string().min(1).max(2048),
 });
 
 export const profilSchema = z.object({
@@ -55,6 +56,7 @@ export const motDePasseSchema = z
 
 export const forgotPasswordSchema = z.object({
   email: z.email("Email invalide"),
+  turnstileToken: z.string().min(1).max(2048),
 });
 
 export const resetPasswordSchema = z

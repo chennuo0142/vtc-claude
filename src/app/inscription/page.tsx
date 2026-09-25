@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/context";
 import PasswordInput from "@/components/PasswordInput";
 import ResendVerificationButton from "@/components/ResendVerificationButton";
+import TurnstileWidget, { type TurnstileHandle } from "@/components/TurnstileWidget";
 
 export default function InscriptionPage() {
   const { dict } = useLanguage();
@@ -21,6 +22,8 @@ export default function InscriptionPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   function update(field: keyof typeof form, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -35,17 +38,20 @@ export default function InscriptionPage() {
       const res = await fetch("/api/inscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       });
 
       if (!res.ok) {
         const data = await res.json().catch(() => null);
+        if (res.status === 429) throw new Error(t.trop);
+        if (data?.code === "antibot") throw new Error(dict.common.erreurAntibot);
         throw new Error(data?.error ?? dict.common.erreurGenerique);
       }
 
       setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : dict.common.erreurGenerique);
+      turnstileRef.current?.reset();
     } finally {
       setLoading(false);
     }
@@ -131,6 +137,8 @@ export default function InscriptionPage() {
             required
           />
 
+          <TurnstileWidget ref={turnstileRef} onToken={setTurnstileToken} />
+
           {error && (
             <p className="text-sm" style={{ color: "#b3261e" }}>
               {error}
@@ -139,7 +147,7 @@ export default function InscriptionPage() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !turnstileToken}
             className="btn btn-primary btn-block blueprint relative mt-1 uppercase tracking-[0.08em]"
             style={{ height: 42 }}
           >

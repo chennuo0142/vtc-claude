@@ -5,6 +5,7 @@ import { getLocale } from "@/lib/i18n/dictionary";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { RESET_TOKEN_TTL_MS, buildResetUrl, generateResetToken, hashToken } from "@/lib/passwordReset";
 import { getClientIp, purgeExpiredAuthData, rateLimit } from "@/lib/rateLimit";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 const HOUR = 60 * 60 * 1000;
 
@@ -17,10 +18,15 @@ export async function POST(request: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: "Email invalide" }, { status: 400 });
   }
-  const { email } = parsed.data;
+  const { email, turnstileToken } = parsed.data;
 
-  if (!(await rateLimit(`forgot:ip:${getClientIp(request)}`, 10, HOUR))) {
+  const ip = getClientIp(request);
+  if (!(await rateLimit(`forgot:ip:${ip}`, 10, HOUR))) {
     return NextResponse.json({ error: "Trop de demandes, réessayez plus tard" }, { status: 429 });
+  }
+
+  if (!(await verifyTurnstile(turnstileToken, ip))) {
+    return NextResponse.json({ error: "Vérification anti-robot échouée", code: "antibot" }, { status: 400 });
   }
 
   // Compté aussi pour les emails inconnus, pour ne rien laisser transparaître.

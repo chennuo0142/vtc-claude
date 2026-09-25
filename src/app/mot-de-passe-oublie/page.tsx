@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/context";
+import TurnstileWidget, { type TurnstileHandle } from "@/components/TurnstileWidget";
 
 export default function MotDePasseOubliePage() {
   const { dict } = useLanguage();
@@ -11,6 +12,8 @@ export default function MotDePasseOubliePage() {
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -20,20 +23,24 @@ export default function MotDePasseOubliePage() {
       const res = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, turnstileToken }),
       });
       if (res.status === 429) {
         setError(t.trop);
+        turnstileRef.current?.reset();
         return;
       }
       if (!res.ok) {
-        setError(dict.common.erreurGenerique);
+        const data = await res.json().catch(() => null);
+        setError(data?.code === "antibot" ? dict.common.erreurAntibot : dict.common.erreurGenerique);
+        turnstileRef.current?.reset();
         return;
       }
       // Même message quel que soit le résultat côté serveur.
       setSent(true);
     } catch {
       setError(dict.common.erreurGenerique);
+      turnstileRef.current?.reset();
     } finally {
       setLoading(false);
     }
@@ -71,11 +78,13 @@ export default function MotDePasseOubliePage() {
               />
             </label>
 
+            <TurnstileWidget ref={turnstileRef} onToken={setTurnstileToken} />
+
             {error && <p className="text-sm text-red-600">{error}</p>}
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !turnstileToken}
               className="mt-2 rounded-lg bg-black px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-neutral-200"
             >
               {loading ? t.envoiEnCours : t.envoyer}
