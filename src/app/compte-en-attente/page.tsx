@@ -1,6 +1,8 @@
 import { auth, signOut } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { getDictionary } from "@/lib/i18n/dictionary";
+import { prisma } from "@/lib/prisma";
+import ResendVerificationButton from "@/components/ResendVerificationButton";
 
 export default async function CompteEnAttentePage() {
   const session = await auth();
@@ -13,6 +15,13 @@ export default async function CompteEnAttentePage() {
     redirect("/mon-profil");
   }
 
+  // Relu en base : le jeton de session ne reflète pas la confirmation faite depuis l'email.
+  const dbUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { emailVerifiedAt: true },
+  });
+  const needsEmailVerification = session.user.status === "PENDING" && !dbUser?.emailVerifiedAt;
+
   const isRejected = session.user.status === "REJECTED";
   const dict = await getDictionary();
   const t = dict.compteEnAttente;
@@ -20,11 +29,16 @@ export default async function CompteEnAttentePage() {
   return (
     <div className="mx-auto max-w-md px-6 py-16 text-center">
       <h1 className="text-xl font-bold">
-        {isRejected ? t.titreRefuse : t.titreEnAttente}
+        {needsEmailVerification ? t.titreEmailNonConfirme : isRejected ? t.titreRefuse : t.titreEnAttente}
       </h1>
       <p className="mt-2 text-neutral-500">
-        {isRejected ? t.messageRefuse : t.messageEnAttente}
+        {needsEmailVerification ? t.messageEmailNonConfirme : isRejected ? t.messageRefuse : t.messageEnAttente}
       </p>
+      {needsEmailVerification && session.user.email && (
+        <div className="mt-6">
+          <ResendVerificationButton email={session.user.email} />
+        </div>
+      )}
       <form
         action={async () => {
           "use server";

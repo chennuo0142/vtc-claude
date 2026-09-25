@@ -8,7 +8,7 @@ export default async function AdminPage() {
   const t = dict.adminDashboard;
 
   const demandes = await prisma.user.findMany({
-    where: { status: "PENDING" },
+    where: { status: "PENDING", emailVerifiedAt: { not: null } },
     include: { profile: true },
     orderBy: { createdAt: "asc" },
   });

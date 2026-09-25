@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useLanguage } from "@/lib/i18n/context";
 import PasswordInput from "@/components/PasswordInput";
+import ResendVerificationButton from "@/components/ResendVerificationButton";
 
 export default function InscriptionPage() {
-  const router = useRouter();
   const { dict } = useLanguage();
   const t = dict.inscription;
   const [form, setForm] = useState({
@@ -44,7 +44,6 @@ export default function InscriptionPage() {
       }
 
       setSuccess(true);
-      setTimeout(() => router.push("/connexion"), 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : dict.common.erreurGenerique);
     } finally {
@@ -68,6 +67,12 @@ export default function InscriptionPage() {
           <p style={{ color: "var(--color-neutral-700)" }}>
             {t.messageEnvoyee}
           </p>
+          <div className="mt-2 flex flex-col gap-3">
+            <ResendVerificationButton email={form.email} />
+            <Link href="/connexion" className="text-sm underline">
+              {t.retourConnexion}
+            </Link>
+          </div>
         </div>
       </div>
     );

@@ -12,7 +12,13 @@ export function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
 
+// URL publique fixe : les liens envoyés par email (vérification, mot de passe oublié…) ne doivent jamais pointer vers localhost.
+export const APP_BASE_URL = "https://vtc.cosmos-tech.fr";
+
+export function getAppBaseUrl(): string {
+  return APP_BASE_URL;
+}
+
 export function buildResetUrl(token: string): string {
-  const base = (process.env.APP_URL ?? process.env.NEXTAUTH_URL ?? "http://localhost:3000").replace(/\/+$/, "");
-  return `${base}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`;
+  return `${getAppBaseUrl()}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`;
 }

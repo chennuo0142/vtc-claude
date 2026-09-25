@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import bcrypt from "bcryptjs";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { motDePasseSchema } from "@/lib/validation";
+import { sendPasswordChangedEmail, toLocale } from "@/lib/mail";
 
 export async function PATCH(request: Request) {
   const session = await auth();
@@ -33,6 +34,14 @@ export async function PATCH(request: Request) {
 
   const hashedPassword = await bcrypt.hash(nouveauMotDePasse, 10);
   await prisma.user.update({ where: { id: user.id }, data: { password: hashedPassword } });
+
+  after(async () => {
+    try {
+      await sendPasswordChangedEmail(user.email, toLocale(user.locale));
+    } catch (error) {
+      console.error("[mot-de-passe] échec de l'alerte email", error instanceof Error ? error.message : "erreur inconnue");
+    }
+  });
 
   return NextResponse.json({ ok: true });
 }

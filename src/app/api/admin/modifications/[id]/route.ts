@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { sendRequestProcessedEmail, toLocale } from "@/lib/mail";
 import type { Prisma } from "@/generated/prisma/client";
 
 export async function PATCH(
@@ -23,11 +24,25 @@ export async function PATCH(
 
   const profile = await prisma.profile.findUnique({
     where: { id },
-    include: { pendingZones: true, pendingOptions: true, pendingModesPaiement: true },
+    include: {
+      pendingZones: true,
+      pendingOptions: true,
+      pendingModesPaiement: true,
+      user: { select: { email: true, locale: true } },
+    },
   });
   if (!profile) {
     return NextResponse.json({ error: "Profil introuvable" }, { status: 404 });
   }
+
+  const notifyUser = (approved: boolean) =>
+    after(async () => {
+      try {
+        await sendRequestProcessedEmail(profile.user.email, { kind: "profile", approved }, toLocale(profile.user.locale));
+      } catch (error) {
+        console.error("[admin/modifications] échec de l'email de traitement", error instanceof Error ? error.message : "erreur inconnue");
+      }
+    });
 
   const clearedPending = {
     hasPendingChanges: false,
@@ -57,6 +72,7 @@ export async function PATCH(
         pendingModesPaiement: { set: [] },
       },
     });
+    notifyUser(false);
     return NextResponse.json(updated);
   }
 
@@ -90,5 +106,6 @@ export async function PATCH(
     },
   });
 
+  notifyUser(true);
   return NextResponse.json(updated);
 }

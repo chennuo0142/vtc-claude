@@ -16,6 +16,7 @@ export async function purgeExpiredAuthData(): Promise<void> {
   await Promise.all([
     prisma.rateLimitHit.deleteMany({ where: { createdAt: { lt: new Date(now - 24 * 60 * 60 * 1000) } } }),
     prisma.passwordResetToken.deleteMany({ where: { expiresAt: { lt: new Date(now - 24 * 60 * 60 * 1000) } } }),
+    prisma.emailVerificationToken.deleteMany({ where: { expiresAt: { lt: new Date(now - 24 * 60 * 60 * 1000) } } }),
   ]);
 }
 

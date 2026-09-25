@@ -2,7 +2,8 @@ export const inscription = {
   fr: {
     kickerEnvoyee: "Demande envoyée",
     merci: "Merci !",
-    messageEnvoyee: "Votre demande d'inscription est en attente de validation par un administrateur.",
+    messageEnvoyee: "Votre demande est enregistrée. Un email de confirmation vient de vous être envoyé : cliquez sur le lien qu'il contient pour confirmer votre adresse, puis votre demande sera transmise à un administrateur.",
+    retourConnexion: "Retour à la connexion",
     kickerDevenirChauffeur: "Devenir chauffeur",
     titre: "Demande d'inscription",
     champNom: "Nom",
@@ -18,7 +19,8 @@ export const inscription = {
   en: {
     kickerEnvoyee: "Request sent",
     merci: "Thank you!",
-    messageEnvoyee: "Your registration request is awaiting validation by an administrator.",
+    messageEnvoyee: "Your request has been recorded. A confirmation email has just been sent: click the link it contains to confirm your address, then your request will be forwarded to an administrator.",
+    retourConnexion: "Back to log in",
     kickerDevenirChauffeur: "Become a driver",
     titre: "Registration request",
     champNom: "Last name",
@@ -34,7 +36,8 @@ export const inscription = {
   zh: {
     kickerEnvoyee: "申请已发送",
     merci: "谢谢！",
-    messageEnvoyee: "您的注册申请正在等待管理员审核。",
+    messageEnvoyee: "您的申请已记录。我们刚刚发送了一封确认邮件：请点击其中的链接确认邮箱，之后您的申请将转交给管理员审核。",
+    retourConnexion: "返回登录",
     kickerDevenirChauffeur: "成为司机",
     titre: "注册申请",
     champNom: "姓氏",

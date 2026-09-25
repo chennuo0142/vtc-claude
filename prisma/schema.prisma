@@ -35,16 +35,37 @@ model User {
   status          RequestStatus @default(PENDING)
   numeroReference String?       @unique
   suspended       Boolean       @default(false)
+  // Langue des emails envoyés à l'utilisateur (fr | en | zh).
+  locale          String        @default("fr")
+  // Date de confirmation de l'adresse email (lien envoyé à l'inscription). null = non confirmée.
+  emailVerifiedAt DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
   profile Profile?
   passwordResetTokens PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
 }
 
 // Jeton de réinitialisation de mot de passe. Seul le hash SHA-256 est stocké :
 // le jeton en clair n'existe que dans l'email envoyé à l'utilisateur.
 model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Jeton de confirmation d'adresse email. Comme pour la réinitialisation de mot de passe,
+// seul le hash SHA-256 est stocké.
+model EmailVerificationToken {
   id        String    @id @default(cuid())
   tokenHash String    @unique
   expiresAt DateTime

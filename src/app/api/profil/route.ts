@@ -1,11 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { profilSchema, languesSchema, zonesSchema, optionsSchema, modesPaiementSchema } from "@/lib/validation";
 import { saveUploadedPhoto, UploadError } from "@/lib/upload";
+import { getLocale } from "@/lib/i18n/dictionary";
+import { notifyAdminsPending, sendProfileUpdatedEmail } from "@/lib/mail";
+import { rateLimit } from "@/lib/rateLimit";
 import type { Prisma } from "@/generated/prisma/client";
 
 const GALERIE_SIZE = 6;
+// Une sauvegarde de profil relance la notification : on ne prévient les admins qu'une fois par fenêtre.
+const ADMIN_NOTIFY_WINDOW_MS = 10 * 60 * 1000;
 
 function padGalerie(galerie: string[]): string[] {
   const padded = [...galerie];
@@ -170,6 +175,22 @@ export async function PATCH(request: Request) {
         }),
         hasPendingChanges: true,
       },
+    });
+
+    const locale = await getLocale();
+    const userId = session.user.id;
+    const email = session.user.email;
+    const displayName = updated.prenom;
+    after(async () => {
+      try {
+        await prisma.user.update({ where: { id: userId }, data: { locale } });
+        if (email) await sendProfileUpdatedEmail(email, displayName, locale);
+        if (await rateLimit(`notify-admin:profile:${updated.id}`, 1, ADMIN_NOTIFY_WINDOW_MS)) {
+          await notifyAdminsPending();
+        }
+      } catch (error) {
+        console.error("[profil] échec des notifications email", error instanceof Error ? error.message : "erreur inconnue");
+      }
     });
 
     return NextResponse.json(updated);

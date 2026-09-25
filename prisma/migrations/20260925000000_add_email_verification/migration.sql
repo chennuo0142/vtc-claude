@@ -1,0 +1,29 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "emailVerifiedAt" TIMESTAMP(3);
+
+-- Les comptes existants (dont les administrateurs) sont considérés comme vérifiés.
+UPDATE "User" SET "emailVerifiedAt" = CURRENT_TIMESTAMP;
+
+-- CreateTable
+CREATE TABLE "EmailVerificationToken" (
+    "id" TEXT NOT NULL,
+    "tokenHash" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "usedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userId" TEXT NOT NULL,
+
+    CONSTRAINT "EmailVerificationToken_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "EmailVerificationToken_tokenHash_key" ON "EmailVerificationToken"("tokenHash");
+
+-- CreateIndex
+CREATE INDEX "EmailVerificationToken_userId_idx" ON "EmailVerificationToken"("userId");
+
+-- CreateIndex
+CREATE INDEX "EmailVerificationToken_expiresAt_idx" ON "EmailVerificationToken"("expiresAt");
+
+-- AddForeignKey
+ALTER TABLE "EmailVerificationToken" ADD CONSTRAINT "EmailVerificationToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

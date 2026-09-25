@@ -5,6 +5,7 @@ import { connexion } from "./connexion";
 import { motDePasseOublie } from "./motDePasseOublie";
 import { inscription } from "./inscription";
 import { compteEnAttente } from "./compteEnAttente";
+import { verifierEmail } from "./verifierEmail";
 import { filtresBar } from "./filtresBar";
 import { monProfilPage } from "./monProfilPage";
 import { monProfilForm } from "./monProfilForm";
@@ -32,6 +33,7 @@ const fr = {
   motDePasseOublie: motDePasseOublie.fr,
   inscription: inscription.fr,
   compteEnAttente: compteEnAttente.fr,
+  verifierEmail: verifierEmail.fr,
   filtresBar: filtresBar.fr,
   monProfilPage: monProfilPage.fr,
   monProfilForm: monProfilForm.fr,
@@ -60,6 +62,7 @@ const en = {
   motDePasseOublie: motDePasseOublie.en,
   inscription: inscription.en,
   compteEnAttente: compteEnAttente.en,
+  verifierEmail: verifierEmail.en,
   filtresBar: filtresBar.en,
   monProfilPage: monProfilPage.en,
   monProfilForm: monProfilForm.en,
@@ -88,6 +91,7 @@ const zh = {
   motDePasseOublie: motDePasseOublie.zh,
   inscription: inscription.zh,
   compteEnAttente: compteEnAttente.zh,
+  verifierEmail: verifierEmail.zh,
   filtresBar: filtresBar.zh,
   monProfilPage: monProfilPage.zh,
   monProfilForm: monProfilForm.zh,
