@@ -24,6 +24,7 @@ import { adminZones } from "./adminZones";
 import { adminOptions } from "./adminOptions";
 import { adminModesPaiement } from "./adminModesPaiement";
 import { adminReglages } from "./adminReglages";
+import { adminVerifications } from "./adminVerifications";
 
 const fr = {
   common: common.fr,
@@ -52,6 +53,7 @@ const fr = {
   adminOptions: adminOptions.fr,
   adminModesPaiement: adminModesPaiement.fr,
   adminReglages: adminReglages.fr,
+  adminVerifications: adminVerifications.fr,
 };
 
 const en = {
@@ -81,6 +83,7 @@ const en = {
   adminOptions: adminOptions.en,
   adminModesPaiement: adminModesPaiement.en,
   adminReglages: adminReglages.en,
+  adminVerifications: adminVerifications.en,
 } satisfies typeof fr;
 
 const zh = {
@@ -110,6 +113,7 @@ const zh = {
   adminOptions: adminOptions.zh,
   adminModesPaiement: adminModesPaiement.zh,
   adminReglages: adminReglages.zh,
+  adminVerifications: adminVerifications.zh,
 } satisfies typeof fr;
 
 export const dictionaries = { fr, en, zh };

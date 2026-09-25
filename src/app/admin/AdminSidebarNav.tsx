@@ -12,6 +12,7 @@ import {
   CreditCardIcon,
   SettingsIcon,
   UserIcon,
+  MailIcon,
 } from "@/components/icons";
 import { useLanguage } from "@/lib/i18n/context";
 
@@ -66,9 +67,11 @@ function NavGroup({ label, items, pathname }: { label: string; items: NavItem[];
 export default function AdminSidebarNav({
   demandesCount,
   modificationsCount,
+  verificationsCount,
 }: {
   demandesCount: number;
   modificationsCount: number;
+  verificationsCount: number;
 }) {
   const pathname = usePathname();
   const { dict } = useLanguage();
@@ -83,6 +86,12 @@ export default function AdminSidebarNav({
         pathname={pathname}
         items={[
           { href: "/admin", label: t.demandes, icon: <InboxIcon style={iconStyle} />, count: demandesCount, exact: true },
+          {
+            href: "/admin/verifications",
+            label: t.verifications,
+            icon: <MailIcon style={iconStyle} />,
+            count: verificationsCount,
+          },
           {
             href: "/admin/modifications",
             label: t.modifications,

@@ -54,6 +54,10 @@ export const motDePasseSchema = z
     path: ["confirmationMotDePasse"],
   });
 
+export const resendVerificationSchema = z.object({
+  email: z.email("Email invalide"),
+});
+
 export const forgotPasswordSchema = z.object({
   email: z.email("Email invalide"),
   turnstileToken: z.string().min(1).max(2048),

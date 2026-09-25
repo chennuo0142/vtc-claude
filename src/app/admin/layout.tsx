@@ -18,9 +18,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const session = await auth();
   const email = session?.user.email ?? "";
 
-  const [demandesCount, modificationsCount] = await Promise.all([
+  const [demandesCount, modificationsCount, verificationsCount] = await Promise.all([
     prisma.user.count({ where: { status: "PENDING" } }),
     prisma.profile.count({ where: { hasPendingChanges: true } }),
+    prisma.user.count({ where: { role: "USER", status: "PENDING", emailVerifiedAt: null } }),
   ]);
 
   return (
@@ -46,7 +47,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
 
-        <AdminSidebarNav demandesCount={demandesCount} modificationsCount={modificationsCount} />
+        <AdminSidebarNav
+          demandesCount={demandesCount} modificationsCount={modificationsCount}
+          verificationsCount={verificationsCount}
+        />
 
         <div style={{ padding: 16, borderTop: "1px solid var(--color-divider)" }}>
           <Link href="/" className="btn btn-secondary btn-block">

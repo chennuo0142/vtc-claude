@@ -1,6 +1,6 @@
 import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { forgotPasswordSchema } from "@/lib/validation";
+import { resendVerificationSchema } from "@/lib/validation";
 import { getLocale } from "@/lib/i18n/dictionary";
 import { sendEmailVerificationEmail } from "@/lib/mail";
 import { buildVerificationUrl, issueVerificationToken } from "@/lib/emailVerification";
@@ -13,7 +13,7 @@ const GENERIC_RESPONSE = { ok: true };
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
-  const parsed = forgotPasswordSchema.safeParse(body);
+  const parsed = resendVerificationSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: "Email invalide" }, { status: 400 });
   }
