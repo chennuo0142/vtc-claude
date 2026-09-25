@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { PhoneIcon, MailIcon, ArrowLeftIcon, PinIcon, CarIcon } from "@/components/icons";
+import { PhoneIcon, MailIcon, ArrowLeftIcon, PinIcon, CarIcon, UserPlusIcon } from "@/components/icons";
 import { parseLangues, formatLangue } from "@/lib/langues";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import ContactForm from "./ContactForm";
@@ -34,7 +34,7 @@ export default async function ProfilPage({
     notFound();
   }
 
-  const { nom, prenom, photoUrl, bio, galerie, telephone, emailContact, langues, ville, vehicule, nombrePlaces, annee, zones, options, modesPaiement } =
+  const { nom, prenom, photoUrl, bio, galerie, telephone, emailContact, wechat, whatsapp, line, langues, ville, vehicule, nombrePlaces, annee, zones, options, modesPaiement } =
     user.profile;
   const photosGalerie = galerie.filter(Boolean);
   const languesParlees = parseLangues(langues);
@@ -128,6 +128,36 @@ export default async function ProfilPage({
                 {emailContact}
               </a>
             )}
+            {whatsapp && (
+              <a
+                href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[13px] no-underline"
+                style={{ color: "var(--color-text)" }}
+              >
+                WhatsApp : {whatsapp}
+              </a>
+            )}
+            {wechat && (
+              <span className="break-all text-[13px]" style={{ color: "var(--color-text)" }}>
+                WeChat : {wechat}
+              </span>
+            )}
+            {line && (
+              <span className="break-all text-[13px]" style={{ color: "var(--color-text)" }}>
+                Line : {line}
+              </span>
+            )}
+            <a
+              href={`/profil/${id}/vcard`}
+              download
+              className="btn btn-secondary btn-block gap-2 text-[13px]"
+              style={{ height: 38 }}
+            >
+              <UserPlusIcon className="h-4 w-4 shrink-0" />
+              {t.ajouterContacts}
+            </a>
             <a
               href="#contact"
               className="btn btn-primary btn-block blueprint relative uppercase tracking-[0.08em]"

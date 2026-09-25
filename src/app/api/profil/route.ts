@@ -41,6 +41,10 @@ export async function PATCH(request: Request) {
     codePostal: formData.get("codePostal")?.toString() || undefined,
     vehiculeId: formData.get("vehiculeId")?.toString() || undefined,
     emailContact: formData.get("emailContact")?.toString() || undefined,
+    // Champs facultatifs : une chaîne vide signifie « vidé », donc pas de `|| undefined`.
+    wechat: formData.get("wechat")?.toString(),
+    whatsapp: formData.get("whatsapp")?.toString(),
+    line: formData.get("line")?.toString(),
     nombrePlaces: formData.get("nombrePlaces")?.toString() || undefined,
     annee: formData.get("annee")?.toString() || undefined,
   });
@@ -52,7 +56,7 @@ export async function PATCH(request: Request) {
     );
   }
 
-  const { nom, prenom, bio, telephone, ville, codePostal, vehiculeId, emailContact, nombrePlaces, annee } =
+  const { nom, prenom, bio, telephone, ville, codePostal, vehiculeId, emailContact, wechat, whatsapp, line, nombrePlaces, annee } =
     parsed.data;
 
   const languesRaw = formData.get("langues")?.toString();
@@ -162,6 +166,9 @@ export async function PATCH(request: Request) {
         pendingCodePostal: codePostal ?? profile.pendingCodePostal ?? profile.codePostal,
         pendingVehicule: vehiculeId ? { connect: { id: vehiculeId } } : { disconnect: true },
         pendingEmailContact: emailContact ?? profile.pendingEmailContact ?? profile.emailContact,
+        pendingWechat: wechat ?? profile.pendingWechat ?? profile.wechat ?? "",
+        pendingWhatsapp: whatsapp ?? profile.pendingWhatsapp ?? profile.whatsapp ?? "",
+        pendingLine: line ?? profile.pendingLine ?? profile.line ?? "",
         pendingNombrePlaces: nombrePlaces ?? profile.pendingNombrePlaces ?? profile.nombrePlaces,
         pendingAnnee: annee ?? profile.pendingAnnee ?? profile.annee,
         pendingPhotoUrl,

@@ -26,6 +26,9 @@ export type MonProfilFormProps = {
   ville: string;
   codePostal: string;
   emailContact: string | null;
+  wechat: string | null;
+  whatsapp: string | null;
+  line: string | null;
   vehiculeId: string | null;
   nombrePlaces: number | null;
   annee: number | null;
@@ -87,6 +90,9 @@ export default function MonProfilForm({
   ville,
   codePostal,
   emailContact,
+  wechat,
+  whatsapp,
+  line,
   vehiculeId,
   nombrePlaces,
   annee,
@@ -383,6 +389,18 @@ export default function MonProfilForm({
           <div className="field">
             <label htmlFor="mp-codePostal">{t.coordonnees.codePostal}</label>
             <input id="mp-codePostal" name="codePostal" defaultValue={codePostal} className="input" />
+          </div>
+          <div className="field">
+            <label htmlFor="mp-wechat">{t.coordonnees.wechat}</label>
+            <input id="mp-wechat" name="wechat" defaultValue={wechat ?? ""} maxLength={50} className="input" />
+          </div>
+          <div className="field">
+            <label htmlFor="mp-whatsapp">{t.coordonnees.whatsapp}</label>
+            <input id="mp-whatsapp" type="tel" name="whatsapp" defaultValue={whatsapp ?? ""} maxLength={20} className="input" />
+          </div>
+          <div className="field">
+            <label htmlFor="mp-line">{t.coordonnees.line}</label>
+            <input id="mp-line" name="line" defaultValue={line ?? ""} maxLength={50} className="input" />
           </div>
         </div>
       </div>

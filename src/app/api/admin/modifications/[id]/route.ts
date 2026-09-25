@@ -56,6 +56,9 @@ export async function PATCH(
     pendingCarteBackgroundUrl: null,
     pendingGalerie: [],
     pendingEmailContact: null,
+    pendingWechat: null,
+    pendingWhatsapp: null,
+    pendingLine: null,
     pendingLangues: [],
     pendingNombrePlaces: null,
     pendingAnnee: null,
@@ -92,6 +95,10 @@ export async function PATCH(
         ? { connect: { id: profile.pendingVehiculeId } }
         : { disconnect: true },
       emailContact: profile.pendingEmailContact ?? profile.emailContact,
+      // "" en attente = champ vidé par le chauffeur ; null = pas de changement.
+      wechat: profile.pendingWechat !== null ? profile.pendingWechat || null : profile.wechat,
+      whatsapp: profile.pendingWhatsapp !== null ? profile.pendingWhatsapp || null : profile.whatsapp,
+      line: profile.pendingLine !== null ? profile.pendingLine || null : profile.line,
       nombrePlaces: profile.pendingNombrePlaces ?? profile.nombrePlaces,
       annee: profile.pendingAnnee ?? profile.annee,
       langues: (profile.pendingLangues ?? profile.langues ?? []) as Prisma.InputJsonValue,

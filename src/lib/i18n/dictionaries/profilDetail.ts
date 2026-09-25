@@ -2,6 +2,7 @@ export const profilDetail = {
   fr: {
     retourAnnuaire: "Retour à l'annuaire",
     contactDirect: "Contact direct",
+    ajouterContacts: "Ajouter à mes contacts",
     contacterPrenom: (prenom: string) => `Contacter ${prenom}`,
     reponseHabituelle: "Réponse habituelle en moins d'une heure",
     kicker: "Chauffeur VTC",
@@ -22,6 +23,7 @@ export const profilDetail = {
   en: {
     retourAnnuaire: "Back to directory",
     contactDirect: "Direct contact",
+    ajouterContacts: "Add to my contacts",
     contacterPrenom: (prenom: string) => `Contact ${prenom}`,
     reponseHabituelle: "Usual response time under one hour",
     kicker: "VTC Driver",
@@ -42,6 +44,7 @@ export const profilDetail = {
   zh: {
     retourAnnuaire: "返回目录",
     contactDirect: "直接联系",
+    ajouterContacts: "添加到通讯录",
     contacterPrenom: (prenom: string) => `联系 ${prenom}`,
     reponseHabituelle: "通常一小时内回复",
     kicker: "VTC 专车司机",

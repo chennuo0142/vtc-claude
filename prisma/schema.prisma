@@ -99,6 +99,9 @@ model Profile {
   carteBackgroundUrl String?
   bio          String?
   emailContact String?
+  wechat       String?
+  whatsapp     String?
+  line         String?
   galerie      String[] @default([])
   langues      Json     @default("[]")
   nombrePlaces Int?
@@ -125,6 +128,9 @@ model Profile {
   pendingCarteBackgroundUrl String?
   pendingBio           String?
   pendingEmailContact  String?
+  pendingWechat        String?
+  pendingWhatsapp      String?
+  pendingLine          String?
   pendingGalerie       String[] @default([])
   pendingLangues       Json     @default("[]")
   pendingNombrePlaces  Int?

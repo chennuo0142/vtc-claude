@@ -34,6 +34,13 @@ export const profilSchema = z.object({
     .optional(),
   vehiculeId: z.string().trim().optional(),
   emailContact: z.email("Email invalide").optional(),
+  wechat: z.string().trim().max(50).optional(),
+  whatsapp: z
+    .string()
+    .trim()
+    .regex(/^([0-9+ .()-]{6,20})?$/, "Numéro WhatsApp invalide")
+    .optional(),
+  line: z.string().trim().max(50).optional(),
   nombrePlaces: z.coerce.number().int().min(1, "Le nombre de places doit être positif").max(50).optional(),
   annee: z.coerce
     .number()

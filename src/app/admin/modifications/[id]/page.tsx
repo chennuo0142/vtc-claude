@@ -153,6 +153,9 @@ export default async function ModificationDetailPage({
     { label: t.champs.ville, avant: profile.ville, apres: profile.pendingVille ?? "" },
     { label: t.champs.codePostal, avant: profile.codePostal, apres: profile.pendingCodePostal ?? "" },
     { label: t.champs.emailContact, avant: profile.emailContact ?? "", apres: profile.pendingEmailContact ?? "" },
+    { label: t.champs.wechat, avant: profile.wechat ?? "", apres: profile.pendingWechat ?? profile.wechat ?? "" },
+    { label: t.champs.whatsapp, avant: profile.whatsapp ?? "", apres: profile.pendingWhatsapp ?? profile.whatsapp ?? "" },
+    { label: t.champs.line, avant: profile.line ?? "", apres: profile.pendingLine ?? profile.line ?? "" },
     {
       label: t.champs.languesParlees,
       avant: formatLanguesList(profile.langues),
